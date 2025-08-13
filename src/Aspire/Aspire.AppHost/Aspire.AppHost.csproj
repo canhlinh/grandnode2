@@ -18,8 +18,8 @@
 		<PackageReference Include="Aspire.Hosting.MongoDB" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Aspire.Dashboard.Sdk.$(NETCoreSdkRuntimeIdentifier)" />
-		<PackageReference Include="Aspire.Hosting.Orchestration.$(NETCoreSdkRuntimeIdentifier)" />
+		<PackageReference Include="Aspire.Dashboard.Sdk.linux-x64" />
+		<PackageReference Include="Aspire.Hosting.Orchestration.linux-x64" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\Web\Grand.Web.Admin\Grand.Web.Admin.csproj" />
