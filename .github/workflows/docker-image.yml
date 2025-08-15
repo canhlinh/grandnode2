@@ -1,20 +1,20 @@
 name: Docker Image CI
 
 env:
-  TAG: 'latest'
-  
+  TAG: "latest"
+
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   workflow_dispatch:
-  
+
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
     name: Build image
-    
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
