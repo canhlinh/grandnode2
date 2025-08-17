@@ -5,9 +5,9 @@ using Grand.Web.Common.Controllers;
 using Grand.Web.Common.Filters;
 using Grand.Web.Common.Security.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Payments.BrainTree.Models;
+using Payments.Momo.Models;
 
-namespace Payments.BrainTree.Areas.Admin.Controllers;
+namespace Payments.Momo.Areas.Admin.Controllers;
 
 [AuthorizeAdmin]
 [Area("Admin")]

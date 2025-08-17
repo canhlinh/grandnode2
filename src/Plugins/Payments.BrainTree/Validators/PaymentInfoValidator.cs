@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 using Grand.Business.Core.Interfaces.Common.Localization;
-using Payments.BrainTree.Models;
+using Payments.Momo.Models;
 
-namespace Payments.BrainTree.Validators;
+namespace Payments.Momo.Validators;
 
 public class PaymentInfoValidator : AbstractValidator<PaymentInfoModel>
 {

@@ -1,5 +1,5 @@
 ﻿using Grand.Infrastructure.Plugins;
-using Payments.BrainTree;
+using Payments.Momo;
 
 [assembly: PluginInfo(
     FriendlyName = "BrainTree",

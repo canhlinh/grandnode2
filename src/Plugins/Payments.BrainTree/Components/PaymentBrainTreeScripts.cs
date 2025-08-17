@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Payments.BrainTree.Components;
+namespace Payments.Momo.Components;
 
 [ViewComponent(Name = "PaymentBrainTreeScripts")]
 public class PaymentBrainTreeScripts : ViewComponent

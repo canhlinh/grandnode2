@@ -12,12 +12,12 @@ using Grand.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
-using Payments.BrainTree.Models;
-using Payments.BrainTree.Validators;
+using Payments.Momo.Models;
+using Payments.Momo.Validators;
 using Environment = Braintree.Environment;
 using TransactionStatus = Grand.Domain.Payments.TransactionStatus;
 
-namespace Payments.BrainTree;
+namespace Payments.Momo;
 
 public class BrainTreePaymentProvider : IPaymentProvider
 {

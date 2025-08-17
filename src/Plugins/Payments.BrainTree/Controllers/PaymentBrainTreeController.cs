@@ -6,12 +6,12 @@ using Grand.Infrastructure;
 using Grand.Web.Common.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Payments.BrainTree.Models;
-using Payments.BrainTree.Validators;
+using Payments.Momo.Models;
+using Payments.Momo.Validators;
 using System.Net;
 using Environment = Braintree.Environment;
 
-namespace Payments.BrainTree.Controllers;
+namespace Payments.Momo.Controllers;
 
 public class PaymentBrainTreeController : BasePaymentController
 {

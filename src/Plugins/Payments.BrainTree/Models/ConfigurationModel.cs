@@ -1,7 +1,7 @@
 ﻿using Grand.Infrastructure.ModelBinding;
 using Grand.Infrastructure.Models;
 
-namespace Payments.BrainTree.Models;
+namespace Payments.Momo.Models;
 
 public class ConfigurationModel : BaseModel
 {

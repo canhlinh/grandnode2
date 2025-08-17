@@ -1,6 +1,6 @@
 using Grand.Domain.Configuration;
 
-namespace Payments.BrainTree;
+namespace Payments.Momo;
 
 public class BrainTreePaymentSettings : ISettings
 {

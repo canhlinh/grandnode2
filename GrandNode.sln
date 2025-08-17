@@ -40,6 +40,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grand.Infrastructure", "src\Core\Grand.Infrastructure\Grand.Infrastructure.csproj", "{34A46D97-5996-46B3-BDCA-631EDAA0E210}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{F6F48227-B3C5-4A51-B33F-FF9AD96352DB}"
+	ProjectSection(SolutionItems) = preProject
+		src\Build\Grand.Common.props = src\Build\Grand.Common.props
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authentication.Facebook", "src\Plugins\Authentication.Facebook\Authentication.Facebook.csproj", "{BA4579AF-9C20-477A-891B-926968B11C68}"
 EndProject
@@ -140,6 +143,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aspire.AppHost", "src\Aspire\Aspire.AppHost\Aspire.AppHost.csproj", "{FFA85947-690E-496B-B21E-DB1800F0DCA9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aspire.ServiceDefaults", "src\Aspire\Aspire.ServiceDefaults\Aspire.ServiceDefaults.csproj", "{591950E4-6377-4ECA-A386-8BD3FFE302F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.Momo", "src\Plugins\Payments.Momo\Payments.Momo.csproj", "{99270F58-FE91-70FB-AC02-BE0D0E295942}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -375,6 +380,10 @@ Global
 		{591950E4-6377-4ECA-A386-8BD3FFE302F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{591950E4-6377-4ECA-A386-8BD3FFE302F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{591950E4-6377-4ECA-A386-8BD3FFE302F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99270F58-FE91-70FB-AC02-BE0D0E295942}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99270F58-FE91-70FB-AC02-BE0D0E295942}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99270F58-FE91-70FB-AC02-BE0D0E295942}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99270F58-FE91-70FB-AC02-BE0D0E295942}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -436,6 +445,7 @@ Global
 		{75F9D855-026B-4BCB-90CE-3800F02FA0A7} = {583FFBBD-421C-4FB7-BBDA-F9CAF35A354A}
 		{E0B26803-010B-4198-8016-002242076B61} = {583FFBBD-421C-4FB7-BBDA-F9CAF35A354A}
 		{136F1E35-8B20-465C-8D42-30A5A0D0DA1F} = {583FFBBD-421C-4FB7-BBDA-F9CAF35A354A}
+		{99270F58-FE91-70FB-AC02-BE0D0E295942} = {F6F48227-B3C5-4A51-B33F-FF9AD96352DB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {88B478F4-FD3B-4C24-9E84-4FAAF0254397}

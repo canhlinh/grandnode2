@@ -1,7 +1,7 @@
 ﻿using Grand.Business.Core.Interfaces.Cms;
 using Grand.Business.Core.Interfaces.Common.Localization;
 
-namespace Payments.BrainTree;
+namespace Payments.Momo;
 
 public class BrainTreeWidgetProvider : IWidgetProvider
 {

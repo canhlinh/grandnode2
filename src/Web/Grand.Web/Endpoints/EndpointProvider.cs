@@ -405,6 +405,10 @@ public class EndpointProvider : IEndpointProvider
         endpointRouteBuilder.MapControllerRoute("CheckoutCompleted",
             pattern + "checkout/completed/{orderId?}",
             new { controller = "Checkout", action = "Completed" });
+
+        endpointRouteBuilder.MapControllerRoute("CheckoutFailed",
+            pattern + "checkout/failed/{orderId?}",
+            new { controller = "Checkout", action = "Failed" });
     }
 
     private void RegisterAddToCartRoute(IEndpointRouteBuilder endpointRouteBuilder, string pattern)

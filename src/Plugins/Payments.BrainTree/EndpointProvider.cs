@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 
-namespace Payments.BrainTree;
+namespace Payments.Momo;
 
 public class EndpointProvider : IEndpointProvider
 {

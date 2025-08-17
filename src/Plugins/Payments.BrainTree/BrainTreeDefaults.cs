@@ -1,4 +1,4 @@
-﻿namespace Payments.BrainTree;
+﻿namespace Payments.Momo;
 
 public static class BrainTreeDefaults
 {

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Payments.BrainTree;
+namespace Payments.Momo;
 
 public class StartupApplication : IStartupApplication
 {

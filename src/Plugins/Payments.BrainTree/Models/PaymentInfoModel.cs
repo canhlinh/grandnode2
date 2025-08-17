@@ -2,7 +2,7 @@
 using Grand.Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Payments.BrainTree.Models;
+namespace Payments.Momo.Models;
 
 public class PaymentInfoModel : BaseModel
 {

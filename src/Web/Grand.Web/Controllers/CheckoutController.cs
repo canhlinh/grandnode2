@@ -682,6 +682,37 @@ public class CheckoutController : BasePublicController
         return View(model);
     }
 
+    [HttpGet]
+    public virtual async Task<IActionResult> Failed(string orderId)
+    {
+        //validation
+        if (await _groupService.IsGuest(_contextAccessor.WorkContext.CurrentCustomer) && !_orderSettings.AnonymousCheckoutAllowed)
+            return Challenge();
+
+        Order order = null;
+        if (!string.IsNullOrEmpty(orderId)) order = await _orderService.GetOrderById(orderId);
+
+        order ??= (await _orderService.SearchOrders(_contextAccessor.StoreContext.CurrentStore.Id,
+                customerId: _contextAccessor.WorkContext.CurrentCustomer.Id, pageSize: 1))
+            .FirstOrDefault();
+
+        if (order == null || order.Deleted || _contextAccessor.WorkContext.CurrentCustomer.Id != order.CustomerId)
+            return RedirectToRoute("HomePage");
+
+        //disable "order completed" page?
+        if (_orderSettings.DisableOrderCompletedPage)
+            return RedirectToRoute("OrderDetails", new { orderId = order.Id });
+
+        //model
+        var model = new CheckoutCompletedModel {
+            OrderId = order.Id,
+            OrderNumber = order.OrderNumber,
+            OrderCode = order.Code
+        };
+
+        return View(model);
+    }
+
     [HttpPost]
     public virtual async Task<IActionResult> ConfirmOrder()
     {
