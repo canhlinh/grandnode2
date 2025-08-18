@@ -184,7 +184,7 @@
 
 
                 <label class="custom-control custom-checkbox my-3">
-                    <input asp-for="ConnectionInfo" onchange="toggleMongoDBConnectionInfo()" class="custom-control-input"/>
+                    <input asp-for="ConnectionInfo" onchange="toggleMongoDBConnectionInfo()" class="custom-control-input" checked/>
                     <span class="custom-control-label"></span>
                     <span class="custom-control-description">@LocalizedService.GetResource(Model.SelectedLanguage, "ConnectionString"):</span>
                 </label>

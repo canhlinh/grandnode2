@@ -1,0 +1,167 @@
+﻿<Language Name="Vietnamese" IsDefault="true" IsRightToLeft="false">
+  <LocaleResource Name="AdminEmail">
+    <Value>Email quản trị viên</Value>
+  </LocaleResource>
+  <LocaleResource Name="AdminEmailRequired">
+    <Value>Nhập email quản trị viên</Value>
+  </LocaleResource>
+  <LocaleResource Name="AdminPassword">
+    <Value>Mật khẩu quản trị viên</Value>
+  </LocaleResource>
+  <LocaleResource Name="AdminPasswordRequired">
+    <Value>Nhập mật khẩu quản trị viên</Value>
+  </LocaleResource>
+  <LocaleResource Name="CompanyName">
+    <Value>Tên công ty</Value>
+  </LocaleResource>
+  <LocaleResource Name="CompanyAddress">
+    <Value>Địa chỉ công ty</Value>
+  </LocaleResource>
+  <LocaleResource Name="CompanyPhoneNumber">
+    <Value>Số điện thoại công ty</Value>
+  </LocaleResource>
+  <LocaleResource Name="CompanyEmail">
+    <Value>Email công ty</Value>
+  </LocaleResource>
+  <LocaleResource Name="ConfigureDirectoryPermissions">
+    <Value>Tài khoản '{0}' không được cấp quyền Sửa đổi trong thư mục '{1}'. Vui lòng cấu hình quyền này.</Value>
+  </LocaleResource>
+  <LocaleResource Name="ConfigureFilePermissions">
+    <Value>Tài khoản '{0}' không được cấp quyền Sửa đổi trên tệp '{1}'. Vui lòng cấu hình quyền này.</Value>
+  </LocaleResource>
+  <LocaleResource Name="ConfirmPassword">
+    <Value>Xác nhận mật khẩu</Value>
+  </LocaleResource>
+  <LocaleResource Name="ConfirmPasswordRequired">
+    <Value>Nhập mật khẩu xác nhận</Value>
+  </LocaleResource>
+  <LocaleResource Name="ConnectionString">
+    <Value>Chuỗi kết nối</Value>
+  </LocaleResource>
+  <LocaleResource Name="ConnectionStringRequired">
+    <Value>Cần có chuỗi kết nối MongoDB</Value>
+  </LocaleResource>
+  <LocaleResource Name="ConnectionStringValues">
+    <Value>Nhập giá trị kết nối MongoDB</Value>
+  </LocaleResource>
+  <LocaleResource Name="ConnectionStringWrongFormat">
+    <Value>Sai định dạng chuỗi kết nối MongoDB</Value>
+  </LocaleResource>
+  <LocaleResource Name="CreateDatabaseIfDoesNotExist">
+    <Value>Tạo cơ sở dữ liệu nếu chưa tồn tại</Value>
+  </LocaleResource>
+  <LocaleResource Name="CreateSampleData">
+    <Value>Tạo dữ liệu mẫu</Value>
+  </LocaleResource>
+  <LocaleResource Name="CustomCollation">
+    <Value>Chỉ định collation tùy chỉnh của MongoDB Server</Value>
+  </LocaleResource>
+  <LocaleResource Name="DatabaseCreationError">
+    <Value>Đã xảy ra lỗi khi tạo cơ sở dữ liệu: {0}</Value>
+  </LocaleResource>
+  <LocaleResource Name="DatabaseInformation">
+    <Value>Thông tin cơ sở dữ liệu</Value>
+  </LocaleResource>
+  <LocaleResource Name="DatabaseName">
+    <Value>Tên cơ sở dữ liệu</Value>
+  </LocaleResource>
+  <LocaleResource Name="DatabaseNameRequired">
+    <Value>Bắt buộc nhập tên cơ sở dữ liệu</Value>
+  </LocaleResource>
+  <LocaleResource Name="DatabaseNotExists">
+    <Value>Cơ sở dữ liệu không tồn tại hoặc bạn không có quyền kết nối</Value>
+  </LocaleResource>
+  <LocaleResource Name="DataProvider">
+    <Value>Nhà cung cấp dữ liệu</Value>
+  </LocaleResource>
+  <LocaleResource Name="Documentation1">
+    <Value>Nếu bạn cần thông tin về cách sử dụng grandnode, hãy truy cập</Value>
+  </LocaleResource>
+  <LocaleResource Name="Documentation2">
+    <Value>phần tài liệu trên grandnode.com</Value>
+  </LocaleResource>
+  <LocaleResource Name="Example">
+    <Value>Ví dụ</Value>
+  </LocaleResource>
+  <LocaleResource Name="Install">
+    <Value>Cài đặt</Value>
+  </LocaleResource>
+  <LocaleResource Name="Installing">
+    <Value>Đang cài đặt grandnode...</Value>
+  </LocaleResource>
+  <LocaleResource Name="PasswordsDoNotMatch">
+    <Value>Mật khẩu không khớp</Value>
+  </LocaleResource>
+  <LocaleResource Name="RawConnectionString">
+    <Value>Nhập chuỗi kết nối thô (nâng cao)</Value>
+  </LocaleResource>
+  <LocaleResource Name="Recommended">
+    <Value>[Khuyến nghị]</Value>
+  </LocaleResource>
+  <LocaleResource Name="RestartInstallation">
+    <Value>Khởi động lại quá trình cài đặt</Value>
+  </LocaleResource>
+  <LocaleResource Name="RestartInstallationTooltip">
+    <Value>Nhấn để khởi động lại quá trình cài đặt (xóa tất cả giá trị đã lưu)</Value>
+  </LocaleResource>
+  <LocaleResource Name="SetupFailed">
+    <Value>Cài đặt thất bại: {0}</Value>
+  </LocaleResource>
+  <LocaleResource Name="MongoDBAuthentication">
+    <Value>Sử dụng tài khoản MongoDB Server</Value>
+  </LocaleResource>
+  <LocaleResource Name="MongoDBServerName">
+    <Value>Tên máy chủ MongoDB</Value>
+  </LocaleResource>
+  <LocaleResource Name="MongoDBServerNameRequired">
+    <Value>Bắt buộc nhập tên máy chủ MongoDB</Value>
+  </LocaleResource>
+  <LocaleResource Name="MongoDBUsername">
+    <Value>Tên đăng nhập MongoDB Server</Value>
+  </LocaleResource>
+  <LocaleResource Name="MongoDBPassword">
+    <Value>Mật khẩu MongoDB Server</Value>
+  </LocaleResource>
+  <LocaleResource Name="MongoDBServerPassword">
+    <Value>Mật khẩu MongoDB</Value>
+  </LocaleResource>
+  <LocaleResource Name="MongoDBServerPasswordRequired">
+    <Value>Bắt buộc nhập mật khẩu MongoDB</Value>
+  </LocaleResource>
+  <LocaleResource Name="MongoDBServerUsername">
+    <Value>Tên đăng nhập MongoDB</Value>
+  </LocaleResource>
+  <LocaleResource Name="MongoDBServerUsernameRequired">
+    <Value>Bắt buộc nhập tên đăng nhập MongoDB</Value>
+  </LocaleResource>
+  <LocaleResource Name="MongoDBStandard">
+    <Value>Sử dụng cơ sở dữ liệu MongoDB Server</Value>
+  </LocaleResource>
+  <LocaleResource Name="UseLiteDbEnable">
+    <Value>Quá trình cài đặt cơ sở dữ liệu LiteDB yêu cầu bật cài đặt UseLiteDb trong Appsettings</Value>
+  </LocaleResource>
+  <LocaleResource Name="UseLiteDbDisable">
+    <Value>Quá trình cài đặt cơ sở dữ liệu MongoDB yêu cầu tắt cài đặt UseLiteDb trong Appsettings</Value>
+  </LocaleResource>
+  <LocaleResource Name="StoreInformation">
+    <Value>Thông tin cửa hàng</Value>
+  </LocaleResource>
+  <LocaleResource Name="Title">
+    <Value>Cài đặt grandnode</Value>
+  </LocaleResource>
+  <LocaleResource Name="Tooltip1">
+    <Value>grandnode là giải pháp thương mại điện tử ASP.NET hàng đầu cho cửa hàng trực tuyến. Trình hướng dẫn này sẽ giúp bạn cấu hình grandnode</Value>
+  </LocaleResource>
+  <LocaleResource Name="Tooltip2">
+    <Value>Để hoàn tất trình hướng dẫn này, bạn cần biết một số thông tin liên quan đến máy chủ cơ sở dữ liệu ("chuỗi kết nối"). Vui lòng liên hệ với ISP nếu cần. Nếu bạn cài đặt trên máy tính hoặc máy chủ cục bộ, có thể bạn cần thông tin từ Quản trị hệ thống.</Value>
+  </LocaleResource>
+  <LocaleResource Name="WindowsAuthentication">
+    <Value>Sử dụng xác thực Windows tích hợp</Value>
+  </LocaleResource>
+  <LocaleResource Name="Installed">
+    <Value>Ứng dụng đã được cài đặt thành công. Vui lòng khởi động lại ứng dụng. Chúng tôi khuyến nghị tắt cờ chức năng trong appsettings "Grand.Module.Installer" bằng cách đặt nó thành false.</Value>
+  </LocaleResource>
+  <LocaleResource Name="AlreadyInstalled">
+    <Value>Cơ sở dữ liệu này đã tồn tại và đã được cài đặt GrandNode. Hãy chọn cơ sở dữ liệu khác.</Value>
+  </LocaleResource>
+</Language>
