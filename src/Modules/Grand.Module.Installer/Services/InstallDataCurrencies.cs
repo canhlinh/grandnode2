@@ -19,6 +19,18 @@ public partial class InstallationService
                 RoundingTypeId = RoundingType.Rounding001,
                 MidpointRoundId = MidpointRounding.ToEven
             },
+            new Currency{
+                Name = "USD",
+                CurrencyCode = "USD",
+                Rate = 1,
+                DisplayLocale = "en-US",
+                CustomFormatting = "",
+                NumberDecimal = 2,
+                Published = true,
+                DisplayOrder = 1,
+                RoundingTypeId = RoundingType.Rounding001,
+                MidpointRoundId = MidpointRounding.ToEven
+            },
         };
         currencies.ForEach(x => _currencyRepository.Insert(x));
         return Task.CompletedTask;

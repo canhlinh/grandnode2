@@ -6,14 +6,29 @@ public partial class InstallationService
 {
     protected virtual async Task InstallLanguages()
     {
-        var language = new Language {
+        var languages = new List<Language>
+        {new Language
+        {
             Name = "Vietnamese",
             LanguageCulture = "vi-VN",
             UniqueSeoCode = "vi",
             FlagImageFileName = "vn.png",
             Published = true,
             DisplayOrder = 1
+        },
+        new Language
+        {
+            Name = "English",
+            LanguageCulture = "en-US",
+            UniqueSeoCode = "en",
+            FlagImageFileName = "us.png",
+            Published = true,
+            DisplayOrder = 2
+        }
         };
-        await _languageRepository.InsertAsync(language);
+        foreach (var language in languages)
+        {
+            await _languageRepository.InsertAsync(language);
+        }
     }
 }

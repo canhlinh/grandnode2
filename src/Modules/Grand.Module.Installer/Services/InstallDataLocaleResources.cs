@@ -8,10 +8,11 @@ public partial class InstallationService
     protected virtual async Task InstallLocaleResources()
     {
         await InstallEnglishLocale();
+        await InstallVietnameseLocale();
     }
 
 
-    private virtual async Task InstallEnglishLocale()
+    private async Task InstallEnglishLocale()
     {
         //'English' language
         var language = _languageRepository.Table.Single(l => l.Name == "English");
@@ -39,7 +40,7 @@ public partial class InstallationService
         }
     }
     
-    private virtual async Task InstallVietnameseLocale()
+    private async Task InstallVietnameseLocale()
     {
         //'Vietnamese' language
         var language = _languageRepository.Table.Single(l => l.Name == "Vietnamese");
