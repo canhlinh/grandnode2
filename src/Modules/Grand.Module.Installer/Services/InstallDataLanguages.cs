@@ -7,10 +7,10 @@ public partial class InstallationService
     protected virtual async Task InstallLanguages()
     {
         var language = new Language {
-            Name = "English",
-            LanguageCulture = "en-US",
-            UniqueSeoCode = "en",
-            FlagImageFileName = "us.png",
+            Name = "Vietnamese",
+            LanguageCulture = "vi-VN",
+            UniqueSeoCode = "vi",
+            FlagImageFileName = "vn.png",
             Published = true,
             DisplayOrder = 1
         };
