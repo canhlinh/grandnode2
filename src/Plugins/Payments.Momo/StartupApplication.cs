@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Payments.Momo.Services;
 
 namespace Payments.Momo;
 
@@ -14,6 +15,7 @@ public class StartupApplication : IStartupApplication
     {
         services.AddScoped<IPaymentProvider, MomoPaymentProvider>();
         services.AddScoped<IWidgetProvider, MomoWidgetProvider>();
+        services.AddScoped<IMomoService, MomoService>();
     }
 
     public int Priority => 10;
