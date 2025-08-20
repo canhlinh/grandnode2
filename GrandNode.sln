@@ -50,6 +50,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authentication.Google", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payments.BrainTree", "src\Plugins\Payments.BrainTree\Payments.BrainTree.csproj", "{64775F93-5A04-495F-97C6-BDB3835B18F6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payments.Momo", "src\Plugins\Payments.Momo\Payments.Momo.csproj", "{64775F93-5A04-495F-97C6-BDB3835B18F6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payments.VNPay", "src\Plugins\Payments.VNPay\Payments.VNPay.csproj", "{64775F93-5A04-495F-97C6-BDB3835B18F6}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shipping.FixedRateShipping", "src\Plugins\Shipping.FixedRateShipping\Shipping.FixedRateShipping.csproj", "{17CE6A72-A88D-4587-8FCD-3AB7E35F9524}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tax.FixedRate", "src\Plugins\Tax.FixedRate\Tax.FixedRate.csproj", "{1397574D-93C6-4A2A-94BA-F56367962CC2}"

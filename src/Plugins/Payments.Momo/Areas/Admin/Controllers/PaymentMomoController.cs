@@ -39,7 +39,8 @@ public class PaymentMomoController : BasePaymentController
 
     public IActionResult Configure()
     {
-        var model = new ConfigurationModel {
+        var model = new ConfigurationModel
+        {
             ReturnURL = _momoPaymentSettings.ReturnURL,
             PartnerCode = _momoPaymentSettings.PartnerCode,
             AccessKey = _momoPaymentSettings.AccessKey,
@@ -47,6 +48,8 @@ public class PaymentMomoController : BasePaymentController
             PublicKey = _momoPaymentSettings.PublicKey,
             Environment = _momoPaymentSettings.Environment,
             HookURL = _momoPaymentSettings.HookURL,
+            DisplayOrder = _momoPaymentSettings.DisplayOrder,
+            Description = _momoPaymentSettings.Description,
         };
 
         return View(model);
@@ -66,6 +69,7 @@ public class PaymentMomoController : BasePaymentController
         _momoPaymentSettings.SecretKey = model.SecretKey;
         _momoPaymentSettings.Environment = model.Environment;
         _momoPaymentSettings.DisplayOrder = model.DisplayOrder;
+        _momoPaymentSettings.Description = model.Description;
 
         await _settingService.SaveSetting(_momoPaymentSettings);
 

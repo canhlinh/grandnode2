@@ -39,6 +39,9 @@ public class ConfigurationModel : BaseModel
     [GrandResourceDisplayName("Plugins.Payments.Momo.Fields.Environment")]
     public IList<SelectListItem> AvailableEnvironments { get; set; }
 
+    [GrandResourceDisplayName("Plugins.Payments.Momo.Fields.Description")]
+    public string Description { get; set; }
+
     [GrandResourceDisplayName("Plugins.Payments.Momo.Fields.DisplayOrder")]
     public int DisplayOrder { get; set; }
 }

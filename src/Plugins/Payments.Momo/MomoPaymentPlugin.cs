@@ -20,13 +20,16 @@ public class MomoPaymentPlugin(
     public override async Task Install()
     {
         //settings
-        var settings = new MomoPaymentSettings {
+        var settings = new MomoPaymentSettings
+        {
             PartnerCode = "MOMODCRX20211219",
             AccessKey = "Z0Ab19Lo2UgyWkHJ",
             SecretKey = "l4y7NrpEQLvVn4quwzVSwVnAbHsE43Pt",
             Environment = MomoPaymentSettings.Sandbox,
             ReturnURL = "https://localhost:44350/Plugins/PaymentMomo/ReturnHandler",
             HookURL = "https://webhook.site/cc1da3fb-8c03-4c78-88b3-928135538e37",
+            Description = "Thanh toán bằng ví Momo",
+            DisplayOrder = 0,
         };
         await settingService.SaveSetting(settings);
 
@@ -42,7 +45,7 @@ public class MomoPaymentPlugin(
         await pluginTranslateResource.AddOrUpdatePluginTranslateResource( "Plugins.Payments.Momo.Fields.Environment", "Environment");
         await pluginTranslateResource.AddOrUpdatePluginTranslateResource( "Plugins.Payments.Momo.Fields.PublicKey", "Public Key");
         await pluginTranslateResource.AddOrUpdatePluginTranslateResource( "Plugins.Payments.Momo.Fields.DisplayOrder", "Display order");
-        await pluginTranslateResource.AddOrUpdatePluginTranslateResource( "Plugins.Payments.Momo.PaymentMethodDescription", "Thanh toán bằng Momo");
+        await pluginTranslateResource.AddOrUpdatePluginTranslateResource( "Plugins.Payments.Momo.Fields.Description", "Description");
 
         await base.Install();
     }
@@ -54,19 +57,15 @@ public class MomoPaymentPlugin(
 
         //locales
         await pluginTranslateResource.DeletePluginTranslationResource("Payments.Momo.FriendlyName");
-        await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.UseSandbox");
-        await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.UseSandbox.Hint");
-        await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.MerchantId");
-        await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.MerchantId.Hint");
+        await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.ReturnURL");
+        await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.HookURL");
+        await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.PartnerCode");
+        await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.AccessKey");
+        await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.SecretKey");
         await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.PublicKey");
-        await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.PublicKey.Hint");
-        await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.PrivateKey");
-        await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.PrivateKey.Hint");
-        await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.AdditionalFee");
-        await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.AdditionalFee.Hint");
-        await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.AdditionalFeePercentage");
-        await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.AdditionalFeePercentage.Hint");
-        await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.PaymentMethodDescription");
+        await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.Environment");
+        await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.DisplayOrder");
+        await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.Description");
 
         await base.Uninstall();
     }
