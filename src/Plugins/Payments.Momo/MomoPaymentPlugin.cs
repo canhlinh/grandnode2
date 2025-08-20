@@ -34,7 +34,7 @@ public class MomoPaymentPlugin(
         await settingService.SaveSetting(settings);
 
         //locales
-        await pluginTranslateResource.AddOrUpdatePluginTranslateResource( "Payments.Momo.FriendlyName", "Momo");
+        await pluginTranslateResource.AddOrUpdatePluginTranslateResource( "Plugin.Payments.Momo.FriendlyName", "Momo");
         await pluginTranslateResource.AddOrUpdatePluginTranslateResource( "Plugins.Payments.Momo.Fields.ReturnURL", "ReturnURL");
         await pluginTranslateResource.AddOrUpdatePluginTranslateResource("Plugins.Payments.Momo.Fields.ReturnURL", "HookURL");
         await pluginTranslateResource.AddOrUpdatePluginTranslateResource( "Plugins.Payments.Momo.Fields.PartnerCode", "PartnerCode");
@@ -56,7 +56,7 @@ public class MomoPaymentPlugin(
         await settingService.DeleteSetting<MomoPaymentSettings>();
 
         //locales
-        await pluginTranslateResource.DeletePluginTranslationResource("Payments.Momo.FriendlyName");
+        await pluginTranslateResource.DeletePluginTranslationResource("Plugin.Payments.Momo.FriendlyName");
         await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.ReturnURL");
         await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.HookURL");
         await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.Momo.Fields.PartnerCode");

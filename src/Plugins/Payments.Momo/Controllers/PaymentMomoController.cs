@@ -22,23 +22,20 @@ public class PaymentMomoController : BasePaymentController
     private readonly IPaymentService _paymentService;
     private readonly IOrderService _orderService;
     private readonly MomoPaymentSettings _momoPaymentSettings;
-    private readonly PaymentSettings _paymentSettings;
-    private readonly MomoService _momoService;
+    private readonly IMomoService _momoService;
     
     public PaymentMomoController(
         IContextAccessor contextAccessor,
         IPaymentService paymentService,
         IOrderService orderService,
-        MomoPaymentSettings momoPaymentSettings,
-        PaymentSettings paymentSettings,
-        MomoService momoService)
+        IMomoService momoService,
+        MomoPaymentSettings momoPaymentSettings)
     {
         _contextAccessor = contextAccessor;
         _paymentService = paymentService;
         _orderService = orderService;
-        _paymentSettings = paymentSettings;
-        _momoPaymentSettings = momoPaymentSettings;
         _momoService = momoService;
+        _momoPaymentSettings = momoPaymentSettings;
     }
 
     public async Task<IActionResult> ReturnHandler(RedirectionResult model)
@@ -47,9 +44,6 @@ public class PaymentMomoController : BasePaymentController
         {
             return Content("Momo's PartnerCode không đúng");
         }
-        if (_paymentService.LoadPaymentMethodBySystemName("Payments.Momo") is not MomoPaymentProvider processor ||
-            !processor.IsPaymentMethodActive(_paymentSettings))
-            return Content("MomoPayment module chưa được nạp");
 
         if (await _momoService.ProcessRedirection(model))
         {
