@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Payments.Momo.Models;
 
-public class MomoPaymentRequest
+public class CreatePaymentRequest
 {
     [JsonPropertyName("partnerCode")]
     public string PartnerCode { get; set; }

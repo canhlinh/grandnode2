@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Payments.Momo.Models;
 
-public class MomoPaymentResultModel : BaseModel
+public class RedirectionResult : BaseModel
 {
     public string PartnerCode { get; set; }
     public string OrderId { get; set; }
@@ -16,4 +16,9 @@ public class MomoPaymentResultModel : BaseModel
     public string TransId { get; set; }
 
     public int Amount { get; set; }
+
+    public Guid GetParsedOrderId()
+    {
+        return Guid.Parse(OrderId);
+    }
 }

@@ -1,6 +1,6 @@
 namespace Payments.Momo.Models;
 
-public class MomoPaymentResponse
+public class CreatePaymentResponse
 {
     public string partnerCode { get; set; }
     public string requestId { get; set; }
