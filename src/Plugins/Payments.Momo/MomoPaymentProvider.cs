@@ -264,8 +264,7 @@ public class MomoPaymentProvider : IPaymentProvider
     /// </summary>
     public async Task<string> Description()
     {
-        return await Task.FromResult(
-            _translationService.GetResource("Plugins.Payments.Momo.PaymentMethodDescription"));
+        return await Task.FromResult(_translationService.GetResource("Plugins.Payments.Momo.FriendlyName"));
     }
 
     public string LogoURL => "/Plugins/Payments.Momo/logo.png";

@@ -230,8 +230,7 @@ public class VNPayPaymentProvider : IPaymentProvider
     /// </summary>
     public async Task<string> Description()
     {
-        return await Task.FromResult(
-            _translationService.GetResource("Plugins.Payments.VNPay.PaymentMethodDescription"));
+        return await Task.FromResult(_translationService.GetResource("Plugins.Payments.VNPay.FriendlyName"));
     }
 
     public string LogoURL => "/Plugins/Payments.VNPay/logo.png";
