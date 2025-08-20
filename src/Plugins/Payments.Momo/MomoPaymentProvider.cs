@@ -7,6 +7,7 @@ using Grand.Business.Core.Utilities.Checkout;
 using Grand.Domain.Orders;
 using Grand.Domain.Payments;
 using Microsoft.AspNetCore.Http;
+using Payments.Momo.Services;
 using System.Net;
 
 namespace Payments.Momo;
@@ -14,23 +15,21 @@ namespace Payments.Momo;
 public class MomoPaymentProvider : IPaymentProvider
 {
     private readonly MomoPaymentSettings _momoPaymentSettings;
-    private readonly ICustomerService _customerService;
-    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ITranslationService _translationService;
     private readonly IOrderService _orderService;
+    private readonly IMomoService _momoService;
 
     public MomoPaymentProvider(
         ITranslationService translationService,
-        ICustomerService customerService,
         IOrderService orderService,
-        IHttpContextAccessor httpContextAccessor,
-        MomoPaymentSettings momoPaymentSettings)
+        MomoPaymentSettings momoPaymentSettings,
+        IMomoService momoService
+        )
     {
         _translationService = translationService;
-        _customerService = customerService;
         _orderService = orderService;
-        _httpContextAccessor = httpContextAccessor;
         _momoPaymentSettings = momoPaymentSettings;
+        _momoService = momoService;
     }
 
     public Task<string> GetControllerRouteName()
@@ -74,19 +73,7 @@ public class MomoPaymentProvider : IPaymentProvider
         //nothing
         return Task.CompletedTask;
     }
-    private MomoPaymentRequest CreatePaymentRequest(Order order)
-    {
-        return new MomoPaymentRequest() {
-            partnerCode = _momoPaymentSettings.PartnerCode,
-            amount = (int)order.OrderTotal,
-            orderId = order.OrderGuid.ToString(),
-            requestId = Guid.NewGuid().ToString(),
-            orderInfo = "Mã số đơn hàng: " + order.OrderNumber.ToString(),
-            lang = "vi",
-            ipnUrl = _momoPaymentSettings.ReturnURL,
-            redirectUrl = _momoPaymentSettings.ReturnURL,
-        };
-    }
+
 
     /// <summary>
     ///     Post redirect payment (used by payment gateways that redirecting to a another URL)
@@ -95,26 +82,13 @@ public class MomoPaymentProvider : IPaymentProvider
     public async Task<string> PostRedirectPayment(PaymentTransaction paymentTransaction)
     {
         var order = await _orderService.GetOrderByGuid(paymentTransaction.OrderGuid);
-        var response = await MomoPaymentHelper.CreatePayment(CreatePaymentRequest(order), _momoPaymentSettings.GetCreatePaymentAPI(), _momoPaymentSettings.AccessKey, _momoPaymentSettings.SecretKey);
-        if (response == null)
-        {
-            StringBuilder data = new StringBuilder();
-            data.Append(WebUtility.UrlEncode("message") + " = " + WebUtility.UrlEncode("Không thể kết nối đến Momo") + "&");
-            data.Append(WebUtility.UrlEncode("orderId") + " = " + WebUtility.UrlEncode(order.OrderGuid.ToString()) + "&");
-            data.Append(WebUtility.UrlEncode("resultCode") + " = " + WebUtility.UrlEncode("20"));
-
-            var redirectURL = _momoPaymentSettings.ReturnURL + "?" + data.ToString();
-           // _httpContextAccessor.HttpContext.Response.Redirect(redirectURL);
-            return redirectURL;
-        }
-
-        await _orderService.InsertOrderNote(new OrderNote {
-            Note = string.Format("Đã gửi yêu cầu thanh toán đến Momo, result_code = {0}", response.resultCode),
-            DisplayToCustomer = false,
-            CreatedOnUtc = DateTime.UtcNow,
-            OrderId = order.Id,
-        });
-        return response.payUrl;
+        var redirectUrl = await _momoService.CreateRedirectUrl(order);
+        if (redirectUrl != null) return redirectUrl;
+        StringBuilder data = new StringBuilder();
+        data.Append(WebUtility.UrlEncode("message") + " = " + WebUtility.UrlEncode("Không thể kết nối đến Momo") + "&");
+        data.Append(WebUtility.UrlEncode("orderId") + " = " + WebUtility.UrlEncode(order.OrderGuid.ToString()) + "&");
+        data.Append(WebUtility.UrlEncode("resultCode") + " = " + WebUtility.UrlEncode("20"));
+        return  _momoPaymentSettings.ReturnURL + "?" + data.ToString();
 
     }
 
