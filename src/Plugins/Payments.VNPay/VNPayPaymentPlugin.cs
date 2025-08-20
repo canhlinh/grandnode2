@@ -45,8 +45,8 @@ namespace Payments.VNPay
             await settingService.DeleteSetting<VNPayPaymentSettings>();
 
             //locales
-            await pluginTranslateResource.DeletePluginTranslateResource("Payments.VNPay.FriendlyName");
-            await pluginTranslateResource.DeletePluginTranslateResource("Plugins.Payments.VNPay.Fields.Description");
+            await pluginTranslateResource.DeletePluginTranslationResource("Payments.VNPay.FriendlyName");
+            await pluginTranslateResource.DeletePluginTranslationResource("Plugins.Payments.VNPay.Fields.Description");
 
             await base.Uninstall();
         }
