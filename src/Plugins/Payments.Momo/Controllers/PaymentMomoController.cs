@@ -29,13 +29,9 @@ public class PaymentMomoController : BasePaymentController
         IContextAccessor contextAccessor,
         IPaymentService paymentService,
         IOrderService orderService,
-        ILogger<PaymentMomoController> logger,
-        IMediator mediator,
-        IPaymentTransactionService paymentTransactionService,
         MomoPaymentSettings momoPaymentSettings,
         PaymentSettings paymentSettings,
-        MomoService momoService
-        )
+        MomoService momoService)
     {
         _contextAccessor = contextAccessor;
         _paymentService = paymentService;
