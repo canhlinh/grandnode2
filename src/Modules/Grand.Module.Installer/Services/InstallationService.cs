@@ -91,6 +91,9 @@ public partial class InstallationService : IInstallationService
         IRepository<EmailAccount> emailAccountRepository,
         IRepository<MessageTemplate> messageTemplateRepository,
         IRepository<Country> countryRepository,
+        IRepository<Province> provinceRepository,
+        IRepository<District> districtRepository,
+        IRepository<Ward> wardRepository,
         IRepository<Discount> discountRepository,
         IRepository<DiscountCoupon> discountCouponRepository,
         IRepository<DiscountUsageHistory> discountusageRepository,
@@ -143,9 +146,6 @@ public partial class InstallationService : IInstallationService
         IRepository<RobotsTxt> robotsTxtRepository,
         IRepository<Picture> pictureRepository,
         IRepository<Download> downloadRepository)
-        // IRepository<Province> provinceRepository, 
-        // IRepository<District> districtRepository, 
-        // IRepository<Ward> wardRepository)
     {
         _versionRepository = versionRepository;
         _adminRepository = adminRepository;
@@ -187,6 +187,9 @@ public partial class InstallationService : IInstallationService
         _emailAccountRepository = emailAccountRepository;
         _messageTemplateRepository = messageTemplateRepository;
         _countryRepository = countryRepository;
+        _provinceRepository = provinceRepository;
+        _districtRepository = districtRepository;
+        _wardRepository = wardRepository;
         _discountRepository = discountRepository;
         _discountCouponRepository = discountCouponRepository;
         _blogPostRepository = blogPostRepository;
@@ -245,9 +248,6 @@ public partial class InstallationService : IInstallationService
         _serviceProvider = serviceProvider;
         _pictureRepository = pictureRepository;
         _downloadRepository = downloadRepository;
-        // _provinceRepository = provinceRepository;
-        // _districtRepository = districtRepository;
-        // _wardRepository = wardRepository;
     }
 
     #endregion
@@ -793,13 +793,13 @@ public partial class InstallationService : IInstallationService
         await dbContext.CreateIndex(_countryRepository, OrderBuilder<Country>.Create().Ascending(x => x.DisplayOrder),
             "DisplayOrder");
 
-        //Province, District, Ward (Vietnamese administrative divisions)
-        await dbContext.CreateIndex(_provinceRepository, OrderBuilder<Province>.Create().Ascending(x => x.DisplayOrder),
-            "DisplayOrder");
-        await dbContext.CreateIndex(_districtRepository, OrderBuilder<District>.Create().Ascending(x => x.ProvinceId).Ascending(x => x.DisplayOrder),
-            "ProvinceId_DisplayOrder");
-        await dbContext.CreateIndex(_wardRepository, OrderBuilder<Ward>.Create().Ascending(x => x.DistrictId).Ascending(x => x.DisplayOrder),
-            "DistrictId_DisplayOrder");
+        // Province, District, Ward (Vietnamese administrative divisions)
+         await dbContext.CreateIndex(_provinceRepository, OrderBuilder<Province>.Create().Ascending(x => x.DisplayOrder),
+             "DisplayOrder");
+         await dbContext.CreateIndex(_districtRepository, OrderBuilder<District>.Create().Ascending(x => x.ProvinceId).Ascending(x => x.DisplayOrder),
+             "ProvinceId_DisplayOrder");
+         await dbContext.CreateIndex(_wardRepository, OrderBuilder<Ward>.Create().Ascending(x => x.DistrictId).Ascending(x => x.DisplayOrder),
+             "DistrictId_DisplayOrder");
 
         //discount
         await dbContext.CreateIndex(_discountRepository, OrderBuilder<Discount>.Create().Ascending(x => x.Name),

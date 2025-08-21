@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace Grand.Module.Installer.Services;
 
-public abstract partial class InstallationService
+public partial class InstallationService
 {
     protected virtual async Task InstallCountriesAndStates()
     {
@@ -44,7 +44,7 @@ public abstract partial class InstallationService
         {
             PropertyNameCaseInsensitive = true
         };
-
+        
         var locations = JsonSerializer.Deserialize<List<Location>>(json, options);
         foreach (var loc in locations!)
         {
