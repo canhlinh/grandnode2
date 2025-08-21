@@ -86,7 +86,7 @@ public partial class InstallationService
         }
     }
     
-    protected abstract class Location
+    protected class Location
     {
         [JsonPropertyName("city_id")]
         public int CityId { get; set; }
