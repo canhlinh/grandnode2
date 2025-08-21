@@ -2,7 +2,7 @@
 
 namespace Shipping.NhanhVn;
 
-public class ShippingPointRateSettings : ISettings
+public class ShippingNhanhVnSettings : ISettings
 {
     public int DisplayOrder { get; set; }
 }

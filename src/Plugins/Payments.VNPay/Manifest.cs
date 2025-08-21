@@ -6,5 +6,5 @@ using Payments.VNPay;
     Group = "Payment methods",
     SystemName = VNPayDefaults.ProviderSystemName,
     Author = "canhlinh",
-    Version = "2.1.1"
+    Version = "1.0.0"
 )]

@@ -27,6 +27,8 @@ public class StateProvince : SubBaseEntity, ITranslationEntity
     /// </summary>
     public int DisplayOrder { get; set; }
 
+    public int Version { get; set; }
+
     /// <summary>
     ///     Gets or sets the collection of locales
     /// </summary>

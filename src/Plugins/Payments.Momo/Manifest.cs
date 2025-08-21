@@ -6,5 +6,5 @@ using Payments.Momo;
     Group = "Payment methods",
     SystemName = MomoDefaults.ProviderSystemName,
     Author = "canhlinh",
-    Version = "2.1.1"
+    Version = "1.0.0"
 )]

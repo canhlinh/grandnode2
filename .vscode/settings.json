@@ -1,0 +1,48 @@
+{
+    // Performance optimizations
+    "files.exclude": {
+        "**/bin": true,
+        "**/obj": true,
+        "**/.vs": true,
+        "**/node_modules": true,
+        "**/.git": true,
+        "**/packages": true
+    },
+    "search.exclude": {
+        "**/bin": true,
+        "**/obj": true,
+        "**/.vs": true,
+        "**/node_modules": true,
+        "**/packages": true
+    },
+    "files.watcherExclude": {
+        "**/bin/**": true,
+        "**/obj/**": true,
+        "**/.vs/**": true,
+        "**/node_modules/**": true,
+        "**/packages/**": true
+    },
+    
+    // C# specific optimizations
+    "omnisharp.enableEditorConfigSupport": true,
+    "omnisharp.enableRoslynAnalyzers": true,
+    "omnisharp.useModernNet": true,
+    
+    // Disable heavy features if needed
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": false,
+        "strings": false
+    },
+    "editor.suggest.localityBonus": true,
+    "editor.acceptSuggestionOnCommitCharacter": false,
+    
+    // File associations
+    "files.associations": {
+        "*.cshtml": "html",
+        "*.csproj": "xml",
+        "*.props": "xml"
+    },
+    "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true,
+    "dotnet.formatting.organizeImportsOnFormat": true
+}

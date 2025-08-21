@@ -143,6 +143,9 @@ public partial class InstallationService : IInstallationService
         IRepository<RobotsTxt> robotsTxtRepository,
         IRepository<Picture> pictureRepository,
         IRepository<Download> downloadRepository)
+        // IRepository<Province> provinceRepository, 
+        // IRepository<District> districtRepository, 
+        // IRepository<Ward> wardRepository)
     {
         _versionRepository = versionRepository;
         _adminRepository = adminRepository;
@@ -242,6 +245,9 @@ public partial class InstallationService : IInstallationService
         _serviceProvider = serviceProvider;
         _pictureRepository = pictureRepository;
         _downloadRepository = downloadRepository;
+        // _provinceRepository = provinceRepository;
+        // _districtRepository = districtRepository;
+        // _wardRepository = wardRepository;
     }
 
     #endregion
@@ -351,6 +357,9 @@ public partial class InstallationService : IInstallationService
     private readonly IRepository<EmailAccount> _emailAccountRepository;
     private readonly IRepository<MessageTemplate> _messageTemplateRepository;
     private readonly IRepository<Country> _countryRepository;
+    private readonly IRepository<Province> _provinceRepository;
+    private readonly IRepository<District> _districtRepository;
+    private readonly IRepository<Ward> _wardRepository;
     private readonly IRepository<Discount> _discountRepository;
     private readonly IRepository<DiscountCoupon> _discountCouponRepository;
     private readonly IRepository<DiscountUsageHistory> _discountusageRepository;
@@ -783,6 +792,14 @@ public partial class InstallationService : IInstallationService
         // Country and Stateprovince
         await dbContext.CreateIndex(_countryRepository, OrderBuilder<Country>.Create().Ascending(x => x.DisplayOrder),
             "DisplayOrder");
+
+        //Province, District, Ward (Vietnamese administrative divisions)
+        await dbContext.CreateIndex(_provinceRepository, OrderBuilder<Province>.Create().Ascending(x => x.DisplayOrder),
+            "DisplayOrder");
+        await dbContext.CreateIndex(_districtRepository, OrderBuilder<District>.Create().Ascending(x => x.ProvinceId).Ascending(x => x.DisplayOrder),
+            "ProvinceId_DisplayOrder");
+        await dbContext.CreateIndex(_wardRepository, OrderBuilder<Ward>.Create().Ascending(x => x.DistrictId).Ascending(x => x.DisplayOrder),
+            "DistrictId_DisplayOrder");
 
         //discount
         await dbContext.CreateIndex(_discountRepository, OrderBuilder<Discount>.Create().Ascending(x => x.Name),
