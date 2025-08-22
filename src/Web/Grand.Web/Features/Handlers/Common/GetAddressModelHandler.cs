@@ -205,7 +205,7 @@ public class GetAddressModelHandler : IRequestHandler<GetAddressModel, AddressMo
                         });
                     }
                 }
-
+                
                 if (!string.IsNullOrEmpty(model.ProvinceId))
                 {
                     var districts =
@@ -219,6 +219,12 @@ public class GetAddressModelHandler : IRequestHandler<GetAddressModel, AddressMo
                             Value = d.Id,
                             Selected = d.Id == model.DistrictId
                         });
+                    }
+                    
+                    var province = await _countryService.GetProvinceById(model.ProvinceId);
+                    if (province != null)
+                    {
+                        model.ProvinceName = province.Name;
                     }
                 }
 
@@ -234,6 +240,21 @@ public class GetAddressModelHandler : IRequestHandler<GetAddressModel, AddressMo
                             Value = w.Id,
                             Selected = w.Id == model.WardId
                         });
+                    }
+                    
+                    var district = await _countryService.GetDistrictById(model.DistrictId);
+                    if (district != null)
+                    {
+                        model.DistrictName = district.Name;
+                    }
+                }
+                
+                if (!string.IsNullOrEmpty(model.WardId))
+                {
+                    var ward = await _countryService.GetWardById(model.WardId);
+                    if (ward != null)
+                    {
+                        model.WardName = ward.Name;
                     }
                 }
             }

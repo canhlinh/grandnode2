@@ -330,6 +330,11 @@ public class CountryService : ICountryService
         var provinces = _provinceRepository.Table.Where(p => p.CountryId == countryId && p.Version == version).ToList();
         return await _cacheBase.GetAsync(key, () => Task.FromResult(_provinceRepository.Table.Where(p => p.CountryId == countryId && p.Version == version).ToList()));
     }
+
+    public virtual async Task<Province> GetProvinceById(string provinceId)
+    {
+        return await Task.FromResult(_provinceRepository.Table.FirstOrDefault(p => p.Id == provinceId));
+    }
     
     public virtual async Task<IList<District>> GetDistrictsByProvinceId(string provinceId, int version = 1)
     {
@@ -340,6 +345,14 @@ public class CountryService : ICountryService
         return await _cacheBase.GetAsync(key, () => Task.FromResult(_districtRepository.Table.Where(d => d.ProvinceId == provinceId && d.Version == version).ToList()));
     }
 
+    public virtual async Task<District> GetDistrictById(string districtId)
+    {
+        if (string.IsNullOrEmpty(districtId))
+            return null;
+
+        return await _districtRepository.GetByIdAsync(districtId);
+    }
+    
     public virtual async Task<IList<Ward>> GetWardsByDistrictId(string districtId, int version = 1)
     {
         if (string.IsNullOrEmpty(districtId))
@@ -347,6 +360,14 @@ public class CountryService : ICountryService
 
         var key = string.Format(CacheKey.WARDS_BY_DISTRICT, districtId, version);
         return await _cacheBase.GetAsync(key, () => Task.FromResult(_wardRepository.Table.Where(w => w.DistrictId == districtId && w.Version == version).ToList()));
+    }
+    
+    public virtual async Task<Ward> GetWardById(string wardId)
+    {
+        if (string.IsNullOrEmpty(wardId))
+            return null;
+
+        return await _wardRepository.GetByIdAsync(wardId);
     }
     
     #endregion

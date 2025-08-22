@@ -116,8 +116,14 @@ public interface ICountryService
     
     Task<IList<Province>> GetProvincesByCountryId(string countryId, int version = 1);
     
+    Task<Province> GetProvinceById(string provinceId);
+    
     Task<IList<District>> GetDistrictsByProvinceId(string provinceId, int version = 1);
     
+    Task<District> GetDistrictById(string districtId);
+    
     Task<IList<Ward>> GetWardsByDistrictId(string districtId, int version = 2);
+    
+    Task<Ward> GetWardById(string wardId);
     #endregion
 }

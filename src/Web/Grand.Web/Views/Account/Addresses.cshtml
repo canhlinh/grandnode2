@@ -127,6 +127,28 @@
                                         @address.CountryName
                                     </li>
                                 }
+                                @if (address.IsVietnameseAddress)
+                                {
+                                    if (!string.IsNullOrEmpty(address.ProvinceName))
+                                    {
+                                        <li class="province">
+                                            @address.ProvinceName
+                                        </li>
+                                    }
+                                    if (!string.IsNullOrEmpty(address.DistrictName))
+                                    {
+                                        <li class="district">
+                                            @address.DistrictName
+                                        </li>
+                                    }
+
+                                    if (!string.IsNullOrEmpty(address.WardName))
+                                    {
+                                        <li class="ward">
+                                            @address.WardName
+                                        </li>
+                                    }
+                                }
                                 @if (!string.IsNullOrEmpty(address.FormattedCustomAddressAttributes))
                                 {
                                     <li class="custom-attributes-view">
