@@ -37,6 +37,45 @@ public class CountryController : BasePublicController
             { CountryId = countryId, AddSelectStateItem = addSelectStateItem });
         return Json(model);
     }
+    
+    [PublicStore(true)]
+    [HttpGet]
+    public virtual async Task<IActionResult> GetProvincesByCountryId(string countryId, bool addSelectStateItem)
+    {
+        //this action method gets called via an ajax request
+        if (string.IsNullOrEmpty(countryId))
+            return Json(new List<AdministrativeDivisionModel>
+                { new() { id = "", name = _translationService.GetResource("Address.SelectState") } });
+        var model = await _mediator.Send(new GetAdministrativeDivision()
+            { DivisionType = "province", AddSelectStateItem = addSelectStateItem, ParentId = countryId, Version = 1});
+        return Json(model);
+    }
+    
+    [PublicStore(true)]
+    [HttpGet]
+    public virtual async Task<IActionResult> GetDistrictsByProvinceId(string provinceId, bool addSelectStateItem)
+    {
+        //this action method gets called via an ajax request
+        if (string.IsNullOrEmpty(provinceId))
+            return Json(new List<AdministrativeDivisionModel>
+                { new() { id = "", name = _translationService.GetResource("Address.SelectDistrict") } });
+        var model = await _mediator.Send(new GetAdministrativeDivision()
+            { DivisionType = "district", AddSelectStateItem = addSelectStateItem, ParentId = provinceId, Version = 1});
+        return Json(model);
+    }
+    
+    [PublicStore(true)]
+    [HttpGet]
+    public virtual async Task<IActionResult> GetWardsByDistrictId(string districtId, bool addSelectStateItem)
+    {
+        //this action method gets called via an ajax request
+        if (string.IsNullOrEmpty(districtId))
+            return Json(new List<AdministrativeDivisionModel>
+                { new() { id = "", name = _translationService.GetResource("Address.SelectWard") } });
+        var model = await _mediator.Send(new GetAdministrativeDivision()
+            { DivisionType = "ward", AddSelectStateItem = addSelectStateItem, ParentId = districtId, Version = 1});
+        return Json(model);
+    }
 
     #endregion
 

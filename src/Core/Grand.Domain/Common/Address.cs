@@ -41,6 +41,11 @@ public class Address : SubBaseEntity
     ///     Gets or sets the state/province identifier
     /// </summary>
     public string StateProvinceId { get; set; }
+    
+    
+    public string ProvinceId { get; set; }
+    public string DistrictId { get; set; }
+    public string WardId { get; set; }
 
     /// <summary>
     ///     Gets or sets the city

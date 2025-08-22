@@ -24,7 +24,7 @@ public partial class InstallationService
 
         var cVn = new Country
         {
-            Name = "Viet Nam",
+            Name = "Việt Nam",
             AllowsBilling = true,
             AllowsShipping = true,
             TwoLetterIsoCode = "VN",

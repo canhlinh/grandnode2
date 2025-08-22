@@ -26,6 +26,9 @@ public class CountryService : ICountryService
     /// <param name="accessControlConfig">Access control</param>
     public CountryService(
         IRepository<Country> countryRepository,
+        IRepository<Province> provinceRepository,
+        IRepository<District> districtRepository,
+        IRepository<Ward> wardRepository,
         IMediator mediator,
         ICacheBase cacheBase,
         AccessControlConfig accessControlConfig)
@@ -33,6 +36,10 @@ public class CountryService : ICountryService
         _cacheBase = cacheBase;
         _accessControlConfig = accessControlConfig;
         _countryRepository = countryRepository;
+        _provinceRepository = provinceRepository;
+        _districtRepository = districtRepository;
+        _wardRepository = wardRepository;
+        _wardRepository = wardRepository;
         _mediator = mediator;
     }
 
@@ -41,6 +48,9 @@ public class CountryService : ICountryService
     #region Fields
 
     private readonly IRepository<Country> _countryRepository;
+    private readonly IRepository<Province> _provinceRepository;
+    private readonly IRepository<District> _districtRepository;
+    private readonly IRepository<Ward> _wardRepository;
     private readonly IMediator _mediator;
     private readonly ICacheBase _cacheBase;
     private readonly AccessControlConfig _accessControlConfig;
@@ -310,5 +320,34 @@ public class CountryService : ICountryService
 
     #endregion
 
+    
+    public virtual async Task<IList<Province>> GetProvincesByCountryId(string countryId, int version = 1)
+    {
+        if (string.IsNullOrEmpty(countryId))
+            return new List<Province>();
+
+        var key = string.Format(CacheKey.PROVINCES_BY_COUNTRY, countryId, version);
+        var provinces = _provinceRepository.Table.Where(p => p.CountryId == countryId && p.Version == version).ToList();
+        return await _cacheBase.GetAsync(key, () => Task.FromResult(_provinceRepository.Table.Where(p => p.CountryId == countryId && p.Version == version).ToList()));
+    }
+    
+    public virtual async Task<IList<District>> GetDistrictsByProvinceId(string provinceId, int version = 1)
+    {
+        if (string.IsNullOrEmpty(provinceId))
+            return new List<District>();
+
+        var key = string.Format(CacheKey.DISTRICTS_BY_PROVINCE, provinceId, version);
+        return await _cacheBase.GetAsync(key, () => Task.FromResult(_districtRepository.Table.Where(d => d.ProvinceId == provinceId && d.Version == version).ToList()));
+    }
+
+    public virtual async Task<IList<Ward>> GetWardsByDistrictId(string districtId, int version = 1)
+    {
+        if (string.IsNullOrEmpty(districtId))
+            return new List<Ward>();
+
+        var key = string.Format(CacheKey.WARDS_BY_DISTRICT, districtId, version);
+        return await _cacheBase.GetAsync(key, () => Task.FromResult(_wardRepository.Table.Where(w => w.DistrictId == districtId && w.Version == version).ToList()));
+    }
+    
     #endregion
 }

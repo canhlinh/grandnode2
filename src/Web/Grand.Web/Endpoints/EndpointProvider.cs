@@ -338,6 +338,21 @@ public class EndpointProvider : IEndpointProvider
         endpointRouteBuilder.MapControllerRoute("GetStatesByCountryId",
             pattern + "country/getstatesbycountryid/",
             new { controller = "Country", action = "GetStatesByCountryId" });
+        
+        // get provinces by country ID
+        endpointRouteBuilder.MapControllerRoute("GetProvincesByCountryId",
+            pattern + "country/getprovincesbycountryid/",
+            new { controller = "Country", action = "GetProvincesByCountryId" });
+        
+        //get districts by province ID
+        endpointRouteBuilder.MapControllerRoute("GetDistrictsByProvinceId",
+            pattern + "country/getdistrictsbyprovinceid/",
+            new { controller = "Country", action = "GetDistrictsByProvinceId" });
+        
+        //get wards by district ID
+        endpointRouteBuilder.MapControllerRoute("GetWardsByDistrictId",
+            pattern + "country/getwardsbydistrictid/",
+            new { controller = "Country", action = "GetWardsByDistrictId" });
 
         //Cookie accept button handler 
         endpointRouteBuilder.MapControllerRoute("CookieAccept",

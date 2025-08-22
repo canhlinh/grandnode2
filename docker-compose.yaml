@@ -2,26 +2,26 @@ volumes:
   mongo_data:
 
 services:
-  app:
-    build:
-      target: build-env
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      DOTNET_USE_POLLING_FILE_WATCHER: "1"
-      ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_URLS: http://+:8080
-    volumes:
-      - ./src/Business:/app/Business
-      - ./src/Core:/app/Core
-      - ./src/Modules:/app/Modules
-      - ./src/Web:/app/Web
-      - ./src/Aspire:/app/Aspire
-      - ./src/Build:/app/Build
-      - ./src/Plugins:/app/Plugins
-      - ./Directory.Packages.props:/app/Directory.Packages.props
-    ports:
-      - "8080:8080"
+  # app:
+  #   build:
+  #     target: build-env
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     DOTNET_USE_POLLING_FILE_WATCHER: "1"
+  #     ASPNETCORE_ENVIRONMENT: Development
+  #     ASPNETCORE_URLS: http://+:8080
+  #   volumes:
+  #     - ./src/Business:/app/Business
+  #     - ./src/Core:/app/Core
+  #     - ./src/Modules:/app/Modules
+  #     - ./src/Web:/app/Web
+  #     - ./src/Aspire:/app/Aspire
+  #     - ./src/Build:/app/Build
+  #     - ./src/Plugins:/app/Plugins
+  #     - ./Directory.Packages.props:/app/Directory.Packages.props
+  #   ports:
+  #     - "8080:8080"
   mongodb:
     image: mongo:latest
     ports:

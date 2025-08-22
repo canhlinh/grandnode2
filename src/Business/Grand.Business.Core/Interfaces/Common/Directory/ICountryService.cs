@@ -113,5 +113,11 @@ public interface ICountryService
     /// <param name="countryId">Country ident</param>
     Task DeleteStateProvince(StateProvince stateProvince, string countryId);
 
+    
+    Task<IList<Province>> GetProvincesByCountryId(string countryId, int version = 1);
+    
+    Task<IList<District>> GetDistrictsByProvinceId(string provinceId, int version = 1);
+    
+    Task<IList<Ward>> GetWardsByDistrictId(string districtId, int version = 2);
     #endregion
 }

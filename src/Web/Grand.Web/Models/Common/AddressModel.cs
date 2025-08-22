@@ -113,4 +113,31 @@ public class AddressModel : BaseEntityModel
     public bool HideAddressType { get; set; }
 
     public bool DisallowUsersToChangeEmail { get; set; }
+    
+    [GrandResourceDisplayName("Address.Fields.Province")]
+    public int   ProvinceVersion { get; set; }
+    
+    [GrandResourceDisplayName("Address.Fields.Province")]
+    public string ProvinceId { get; set; }
+
+    [GrandResourceDisplayName("Address.Fields.Country")]
+    public string ProvinceName { get; set; }
+    
+    [GrandResourceDisplayName("Address.Fields.District")]
+    public string DistrictId { get; set; }
+
+    [GrandResourceDisplayName("Address.Fields.DistrictName")]
+    public string DistrictName { get; set; }
+    
+    [GrandResourceDisplayName("Address.Fields.Ward")]
+    public string WardId { get; set; }
+    
+    [GrandResourceDisplayName("Address.Fields.WardName")]
+    public string WardName { get; set; }
+    
+    public bool IsVietnameseAddress { get; set; }
+    
+    public IList<SelectListItem> AvailableProvinces { get; set; } = new List<SelectListItem>();
+    public IList<SelectListItem> AvailableDistricts { get; set; } = new List<SelectListItem>();
+    public IList<SelectListItem> AvailableWards { get; set; } = new List<SelectListItem>();
 }

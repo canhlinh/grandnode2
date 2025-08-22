@@ -77,6 +77,9 @@ public class GetAddressModelHandler : IRequestHandler<GetAddressModel, AddressMo
             model.Company = address.Company;
             model.VatNumber = address.VatNumber;
             model.CountryId = address.CountryId;
+            model.ProvinceId = address.ProvinceId;
+            model.DistrictId = address.DistrictId;
+            model.WardId = address.WardId;
             Country country = null;
             if (!string.IsNullOrEmpty(address.CountryId))
                 country = await _countryService.GetCountryById(address.CountryId);
@@ -130,7 +133,7 @@ public class GetAddressModelHandler : IRequestHandler<GetAddressModel, AddressMo
                         ? c.Id == model.CountryId
                         : c.Id == store.DefaultCountryId
                 });
-
+            
             if (_addressSettings.StateProvinceEnabled)
             {
                 var states = await _countryService
@@ -173,6 +176,68 @@ public class GetAddressModelHandler : IRequestHandler<GetAddressModel, AddressMo
         if (customer != null && !await _groupService.IsGuest(customer))
             model.DisallowUsersToChangeEmail = _addressSettings.DisallowUsersToChangeEmail;
         model.AddressTypeEnabled = _addressSettings.AddressTypeEnabled;
+        
+        
+        if (store != null && !string.IsNullOrEmpty(store.DefaultCountryId))
+        {
+            //set default country
+            var country = await _countryService.GetCountryById(store.DefaultCountryId);
+            if (country is { TwoLetterIsoCode: "VN" })
+            {
+                model.IsVietnameseAddress = true;
+                model.CountryId = store.DefaultCountryId;
+                model.CountryName = country.GetTranslation(x => x.Name, language?.Id);
+                model.ProvinceVersion = 1;
+                
+                {
+                    var provinces =
+                        await _countryService.GetProvincesByCountryId(model.CountryId, model.ProvinceVersion);
+
+                    model.AvailableStates.Add(new SelectListItem
+                        { Text = _translationService.GetResource("Address.SelectState"), Value = "" });
+
+                    foreach (var p in provinces)
+                    {
+                        model.AvailableProvinces.Add(new SelectListItem {
+                            Text = p.Name,
+                            Value = p.Id,
+                            Selected = p.Id == model.ProvinceId
+                        });
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(model.ProvinceId))
+                {
+                    var districts =
+                        await _countryService.GetDistrictsByProvinceId(model.ProvinceId, model.ProvinceVersion);
+                    model.AvailableDistricts.Add(new SelectListItem
+                        { Text = _translationService.GetResource("Address.SelectDistrict"), Value = "" });
+                    foreach (var d in districts)
+                    {
+                        model.AvailableDistricts.Add(new SelectListItem {
+                            Text = d.Name,
+                            Value = d.Id,
+                            Selected = d.Id == model.DistrictId
+                        });
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(model.DistrictId))
+                {
+                    var wards = await _countryService.GetWardsByDistrictId(model.DistrictId, model.ProvinceVersion);
+                    model.AvailableWards.Add(new SelectListItem
+                        { Text = _translationService.GetResource("Address.SelectWard"), Value = "" });
+                    foreach (var w in wards)
+                    {
+                        model.AvailableWards.Add(new SelectListItem {
+                            Text = w.Name,
+                            Value = w.Id,
+                            Selected = w.Id == model.WardId
+                        });
+                    }
+                }
+            }
+        }
     }
 
     private async Task PrepareCustomAddressAttributes(AddressModel model, Address address,

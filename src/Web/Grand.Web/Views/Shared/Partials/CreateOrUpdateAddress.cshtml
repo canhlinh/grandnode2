@@ -3,25 +3,25 @@
 @{
     var prefix = ViewData.TemplateInfo.HtmlFieldPrefix;
 }
-@if (Model.CountryEnabled && Model.StateProvinceEnabled)
+@if (Model.CountryEnabled)
 {
     <script asp-location="Footer" asp-order="300">
             function @Html.IdFor(model => model.CountryId)_select_element(e) {
-                var selectedItem = e.value;
-                var ddlStates = document.getElementById("@Html.IdFor(model => model.StateProvinceId)");
+                const selectedItem = e.value;
+                const ddlStates = document.getElementById("@Html.IdFor(model => model.ProvinceId)");
                 axios({
                     method: 'get',
-                    url: "@(Url.RouteUrl("GetStatesByCountryId"))",
+                    url: "@(Url.RouteUrl("GetProvincesByCountryId"))",
                     params: { "countryId": selectedItem, "addSelectStateItem": "true" },
                 }).then(function (response) {
                     ddlStates.innerHTML = '';
                     response.data.forEach(function (id, option) {
-                        elChild = document.createElement('option');
+                        const elChild = document.createElement('option');
                         elChild.setAttribute('value', id.id);
                         elChild.innerHTML = id.name;
                         ddlStates.appendChild(elChild);
                     });
-                    createorupdateaddress@{@prefix}.StateProvinceId = response.data[0].id;
+                    createorupdateaddress@{@prefix}.ProvinceId = response.data[0].id;
                 }).then(function () {
                     ddlStates.classList.remove('is-valid');
                     ddlStates.classList.add('is-invalid');
@@ -29,18 +29,84 @@
                     alert(error);
                 });
             }
-        function @Html.IdFor(model => model.StateProvinceId)_select_element(e) {
-            var ddlStates = document.getElementById("@Html.IdFor(model => model.StateProvinceId)");
+    </script>
+}
+
+@if (Model.IsVietnameseAddress)
+{
+    <script asp-location="Footer" asp-order="300">
+        function @Html.IdFor(model => model.ProvinceId)_select_element(e) {
+            const ddlDistricts = document.getElementById("@Html.IdFor(model => model.DistrictId)");
+            const ddlWards = document.getElementById("@Html.IdFor(model => model.WardId)");
+            ddlWards.innerHTML = '';
+            ddlDistricts.innerHTML = '';
+            
             if (e.selectedIndex > 0) {
-                ddlStates.classList.remove('is-invalid');
-                ddlStates.classList.add('is-valid');
+                ddlDistricts.classList.remove('is-invalid');
+                ddlDistricts.classList.add('is-valid');
+                ddlWards.classList.remove('is-invalid');
+                ddlWards.classList.add('is-valid');
             } else {
-                ddlStates.classList.remove('is-valid');
-                ddlStates.classList.add('is-invalid');
+                ddlDistricts.classList.remove('is-valid');
+                ddlDistricts.classList.add('is-invalid');
+                ddlWards.classList.remove('is-valid');
+                ddlWards.classList.add('is-invalid');
             }
+
+            axios({
+                method: 'get',
+                url: "@(Url.RouteUrl("GetDistrictsByProvinceId"))",
+                params: { "provinceId": e.value, "addSelectStateItem": "true", "provinceVersion": @Model.ProvinceVersion },
+            }).then(function (response) {
+                response.data.forEach(function (id, option) {
+                    const elChild = document.createElement('option');
+                    elChild.setAttribute('value', id.id);
+                    elChild.innerHTML = id.name;
+                    ddlDistricts.appendChild(elChild);
+                });
+                createorupdateaddress@{@prefix}.DistrictId = response.data[0].id;
+            }).then(function () {
+                ddlDistricts.classList.remove('is-valid');
+                ddlDistricts.classList.add('is-invalid');
+            }).catch(function (error) {
+                alert(error);
+            });
+        }
+
+        function @Html.IdFor(model => model.DistrictId)_select_element(e) {
+            const ddlWards = document.getElementById("@Html.IdFor(model => model.WardId)");
+            ddlWards.innerHTML = '';
+            if (e.selectedIndex > 0) {
+                ddlWards.classList.remove('is-invalid');
+                ddlWards.classList.add('is-valid');
+            } else {
+                ddlWards.classList.remove('is-valid');
+                ddlWards.classList.add('is-invalid');
+            }
+
+            axios({
+                method: 'get',
+                url: "@(Url.RouteUrl("GetWardsByDistrictId"))",
+                params: { "districtId": e.value, "addSelectStateItem": "true", "provinceVersion": @Model.ProvinceVersion },
+            }).then(function (response) {
+                ddlWards.innerHTML = '';
+                response.data.forEach(function (id, option) {
+                    const elChild = document.createElement('option');
+                    elChild.setAttribute('value', id.id);
+                    elChild.innerHTML = id.name;
+                    ddlWards.appendChild(elChild);
+                });
+                createorupdateaddress@{@prefix}.WardId = response.data[0].id;
+            }).then(function () {
+                ddlWards.classList.remove('is-valid');
+                ddlWards.classList.add('is-invalid');
+            }).catch(function (error) {
+                alert(error);
+            });
         }
     </script>
 }
+
 <input asp-for="Id" type="hidden"/>
 <div class="edit-address row">
     @if (Model.NameEnabled)
@@ -112,6 +178,44 @@
             }
         </div>
     }
+    
+    @if (Model.IsVietnameseAddress)
+    {
+        
+        <div class="form-group col-sm-12 col-md-6">
+            <validation-provider tag="div" rules="required" v-slot="{ errors, classes }">
+                <label asp-for="ProvinceId" class="col-form-label">@Loc["Address.Fields.Province"]:</label>
+                <span class="required">*</span>
+                <select asp-for="ProvinceId" asp-items="Model.AvailableProvinces" data-val-required=@Loc["Address.Fields.Province.Required"] 
+                        onchange="@Html.IdFor(model => model.ProvinceId)_select_element(this)" v-bind:class="[classes , 'form-control custom-select']" v-model="createorupdateaddress@{@prefix}.ProvinceId">
+                </select>
+                <span class="field-validation-error">{{ errors[0] }}</span>
+            </validation-provider>
+        </div>
+        
+        <div class="form-group col-sm-12 col-md-6">
+            <validation-provider tag="div" rules="required" v-slot="{ errors, classes }">
+                <label asp-for="DistrictId" class="col-form-label">@Loc["Address.Fields.District"]:</label>
+                <span class="required">*</span>
+                <select asp-for="DistrictId" asp-items="Model.AvailableDistricts" data-val-required=@Loc["Address.Fields.District.Required"]
+                        onchange="@Html.IdFor(model => model.DistrictId)_select_element(this)" v-bind:class="[classes , 'form-control custom-select']" v-model="createorupdateaddress@{@prefix}.DistrictId">
+                </select>
+                <span class="field-validation-error">{{ errors[0] }}</span>
+            </validation-provider>
+        </div>
+        
+        <div class="form-group col-sm-12 col-md-6">
+            <validation-provider tag="div" rules="required" v-slot="{ errors, classes }">
+                <label asp-for="WardId" class="col-form-label">@Loc["Address.Fields.Ward"]:</label>
+                <span class="required">*</span>
+                <select asp-for="WardId" asp-items="Model.AvailableWards" data-val-required=@Loc["Address.Fields.Ward.Required"]
+                       v-bind:class="[classes , 'form-control custom-select']" v-model="createorupdateaddress@{@prefix}.WardId">
+                </select>
+                <span class="field-validation-error">{{ errors[0] }}</span>
+            </validation-provider>
+        </div>
+    }
+    
     @if (Model.CountryEnabled)
     {
         <div class="form-group col-sm-12 col-md-6">
@@ -290,6 +394,9 @@
                         City: '@Html.Raw(Model.City)',
                         CountryId: '@Model.CountryId',
                         StateProvinceId: '@Model.StateProvinceId',
+                        ProvinceId: '@Model.ProvinceId',
+                        DistrictId: '@Model.DistrictId',
+                        WardId: '@Model.WardId',
                         PhoneNumber: '@Html.Raw(Model.PhoneNumber)',
                         FaxNumber: '@Html.Raw(Model.FaxNumber)',
                         VatNumber: '@Html.Raw(Model.VatNumber)',

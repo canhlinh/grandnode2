@@ -170,6 +170,9 @@ public static class MappingExtensions
         destination.VatNumber = model.VatNumber;
         destination.CountryId = !string.IsNullOrEmpty(model.CountryId) ? model.CountryId : "";
         destination.StateProvinceId = !string.IsNullOrEmpty(model.StateProvinceId) ? model.StateProvinceId : "";
+        destination.ProvinceId = !string.IsNullOrEmpty(model.ProvinceId) ? model.ProvinceId : "";
+        destination.DistrictId = !string.IsNullOrEmpty(model.DistrictId) ? model.DistrictId : "";
+        destination.WardId = !string.IsNullOrEmpty(model.WardId) ? model.WardId : "";
         destination.City = model.City;
         destination.Address1 = model.Address1;
         destination.Address2 = model.Address2;

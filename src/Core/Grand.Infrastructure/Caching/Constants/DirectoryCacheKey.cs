@@ -153,5 +153,11 @@ public static partial class CacheKey
     /// </summary>
     public static string COUNTRIES_PATTERN_KEY => "Grand.country.";
 
+    
+    public static string PROVINCES_BY_COUNTRY => "Grand.provinces.country.id-{0}-version-{1}";
+    
+    public static string DISTRICTS_BY_PROVINCE => "Grand.districts.province.id-{0}-version-{1}";
+    
+    public static string WARDS_BY_DISTRICT => "Grand.wards.district.id-{0}-version-{1}";
     #endregion
 }
