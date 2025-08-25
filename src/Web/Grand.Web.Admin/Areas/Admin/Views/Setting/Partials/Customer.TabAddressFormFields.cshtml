@@ -352,5 +352,16 @@
         <span asp-validation-for="AddressSettings.DisallowUsersToChangeEmail"></span>
     </div>
 </div>
+<div class="form-group">
+    <div class="col-8 col-md-4 col-sm-4 text-right">
+        <admin-label asp-for="AddressSettings.DivisionVersion" class="control-label"/>
+    </div>
+    <div class="col-4 col-md-8 col-sm-8">
+        <admin-select asp-for="AddressSettings.DivisionVersion" asp-items="EnumTranslationService.ToSelectList(Model.AddressSettings.DivisionVersion)"/>
+        <span asp-validation-for="AddressSettings.DivisionVersion"></span>
+    </div>
+</div>
+
+
 </div>
 </div>

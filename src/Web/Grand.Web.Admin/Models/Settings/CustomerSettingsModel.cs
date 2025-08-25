@@ -263,6 +263,9 @@ public class CustomerSettingsModel : BaseModel
 
         [GrandResourceDisplayName("Admin.Settings.Customer.AddressFormFields.DisallowUsersToChangeEmail")]
         public bool DisallowUsersToChangeEmail { get; set; }
+        
+        [GrandResourceDisplayName("Admin.Settings.Customer.AddressFormFields.DivisionVersion")]
+        public DivisionVersion DivisionVersion { get; set; }
     }
 
     #endregion
