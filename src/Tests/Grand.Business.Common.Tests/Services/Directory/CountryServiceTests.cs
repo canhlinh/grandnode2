@@ -27,6 +27,9 @@ public class CountryServiceTests
     public void Init()
     {
         _repository = new MongoDBRepositoryTest<Country>();
+        _repositoryProvince = new MongoDBRepositoryTest<Province>();
+        _repositoryDistrict = new MongoDBRepositoryTest<District>();
+        _repositoryWard = new MongoDBRepositoryTest<Ward>();
 
         _mediatorMock = new Mock<IMediator>();
         _cacheBase = new MemoryCacheBase(MemoryCacheTest.Get(), _mediatorMock.Object,
