@@ -13,7 +13,11 @@
                                :value="shippingMethod.Name + ':' + shippingMethod.ShippingRateProviderSystemName"
                                :checked="shippingMethod.Selected"
                                class="custom-control-input">
-                        <span class="custom-control-label"></span>
+                        <span class="custom-control-label">
+                            <template v-if="shippingMethod.ShippingOption.Logo !== null">
+                                <img :src="shippingMethod.ShippingOption.Logo" alt="logo" style="height: 32px"/>
+                            </template>
+                        </span>
                         <span :for="'shippingoption_' + index" class="custom-control-description">
                             {{shippingMethod.Name}} ({{shippingMethod.Fee}})
                             <template v-if="shippingMethod.Description !== null">

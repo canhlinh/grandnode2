@@ -5,6 +5,7 @@ using Grand.Business.Core.Interfaces.Common.Localization;
 using Grand.Business.Core.Interfaces.Customers;
 using Grand.Business.Core.Utilities.Checkout;
 using Grand.Domain.Orders;
+using Grand.Domain.Shipping;
 using Grand.Infrastructure;
 
 namespace Shipping.NhanhVn;
@@ -53,27 +54,42 @@ public class ShippingNhanhVnProvider : IShippingRateCalculationProvider
     
     public Task<GetShippingOptionResponse> GetShippingOptions(GetShippingOptionRequest getShippingOptionRequest)
     {
-        throw new NotImplementedException();
+        var response = new GetShippingOptionResponse();
+        response.ShippingOptions.Add(new ShippingOption() {
+            ShippingRateProviderSystemName = ShippingNhanhVnDefaults.SystemName,
+            Name = "Viettel Post Shipping",
+            Rate = 100000,
+            Description = "",
+            Logo = "https://carrier.nvncdn.com/carrier/carr_1692349658_386.png",
+        });
+        response.ShippingOptions.Add(new ShippingOption() {
+            ShippingRateProviderSystemName = ShippingNhanhVnDefaults.SystemName,
+            Name = "GHN Shipping",
+            Rate = 100000,
+            Description = "",
+            Logo = "https://carrier.nvncdn.com/carrier/carr_1692352251_813.png",
+        });
+        return Task.FromResult(response);
     }
 
     public Task<bool> HideShipmentMethods(IList<ShoppingCartItem> cart)
     {
-        throw new NotImplementedException();
+        return Task.FromResult(false);
     }
 
     public Task<double?> GetFixedRate(GetShippingOptionRequest getShippingOptionRequest)
     {
-        throw new NotImplementedException();
+        return Task.FromResult(default(double?));
     }
 
-    public Task<IList<string>> ValidateShippingForm(string shippingOption, IDictionary<string, string> data)
+    public Task<List<string>> ValidateShippingForm(string shippingOption, IDictionary<string, string> data)
     {
-        throw new NotImplementedException();
+        return Task.FromResult(new List<string>());
     }
 
     public Task<string> GetControllerRouteName()
     {
-        throw new NotImplementedException();
+        return Task.FromResult("");
     }
     
     #endregion

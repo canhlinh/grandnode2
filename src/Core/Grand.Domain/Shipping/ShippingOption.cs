@@ -24,4 +24,10 @@ public class ShippingOption
     ///     Gets or sets a shipping option description
     /// </summary>
     public string Description { get; set; }
+    
+    public string Logo { get; set; }
+    
+    public int NhanhVnServiceId { get; set; }
+    
+    public int NhanhVnCarrierId { get; set; }
 }

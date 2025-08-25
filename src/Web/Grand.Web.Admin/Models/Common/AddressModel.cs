@@ -1,5 +1,6 @@
 ﻿using Grand.Domain.Catalog;
 using Grand.Domain.Common;
+using Grand.Domain.Customers;
 using Grand.Infrastructure.ModelBinding;
 using Grand.Infrastructure.Models;
 using Grand.Web.Common.Binders;
@@ -41,6 +42,11 @@ public class AddressModel : BaseEntityModel
 
     [GrandResourceDisplayName("Admin.Address.Fields.StateProvince")]
     public string StateProvinceName { get; set; }
+    public bool IsVietnameseAddress { get; set; }
+    public DivisionVersion DivisionVersion { get; set; } = DivisionVersion.V1;
+    public string ProvinceId { get; set; }
+    public string DistrictId { get; set; }
+    public string WardId { get; set; }
 
     [GrandResourceDisplayName("Admin.Address.Fields.City")]
     public string City { get; set; }
@@ -76,6 +82,10 @@ public class AddressModel : BaseEntityModel
 
     public IList<SelectListItem> AvailableCountries { get; set; } = new List<SelectListItem>();
     public IList<SelectListItem> AvailableStates { get; set; } = new List<SelectListItem>();
+    
+    public IList<SelectListItem> AvailableProvinces { get; set; } = new List<SelectListItem>();
+    public IList<SelectListItem> AvailableDistricts { get; set; } = new List<SelectListItem>();
+    public IList<SelectListItem> AvailableWards { get; set; } = new List<SelectListItem>();
 
 
     public bool NameEnabled { get; set; }

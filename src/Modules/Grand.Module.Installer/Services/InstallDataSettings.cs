@@ -313,7 +313,8 @@ public partial class InstallationService
             PhoneEnabled = true,
             PhoneRequired = true,
             FaxEnabled = false,
-            NoteEnabled = false
+            NoteEnabled = false,
+            DivisionVersion = 1,
         });
 
         await _settingRepository.SaveSetting(new StoreInformationSettings {

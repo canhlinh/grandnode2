@@ -41,7 +41,7 @@ public interface IShippingRateCalculationProvider : IProvider
     /// <returns>Fixed shipping rate; or null in case there's no fixed shipping rate</returns>
     Task<double?> GetFixedRate(GetShippingOptionRequest getShippingOptionRequest);
 
-    Task<IList<string>> ValidateShippingForm(string shippingOption, IDictionary<string, string> data);
+    Task<List<string>> ValidateShippingForm(string shippingOption, IDictionary<string, string> data);
 
     /// <summary>
     ///     Gets a route name for displaying plugin ("shipping" checkout step)

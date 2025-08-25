@@ -196,6 +196,50 @@ public class HomeController : BaseAdminController
         return Json(result);
     }
 
+    [AcceptVerbs("Get")]
+    public async Task<IActionResult> GetDivisions([FromServices] ICountryService countryService,
+        string parentId, string divisionType, int version)
+    {
+        if (string.IsNullOrEmpty(parentId))
+            return Json(new List<dynamic>
+                { new { id = "", name = _translationService.GetResource("Address.SelectState") } });
+
+        switch (divisionType)
+        {
+            case "province":
+                {
+                    var provinces = await countryService.GetProvincesByCountryId(parentId, version);
+                    var result = (from s in provinces
+                        select new { id = s.Id, name = s.Name }).ToList();
+                    result.Insert(0,
+                        new { id = "", name = _translationService.GetResource("Admin.Address.SelectState") });
+                    return Json(result);
+                }
+            case "district":
+            {
+                var districts = await countryService.GetDistrictsByProvinceId(parentId, version);
+                var result = (from s in districts
+                    select new { id = s.Id, name = s.Name }).ToList(); 
+                result.Insert(0,
+                    new { id = "", name = _translationService.GetResource("Admin.Address.SelectState") });
+                return Json(result);
+            }
+            case "ward":
+            {
+                var wards = await countryService.GetWardsByDistrictId(parentId, version);
+                var result = (from s in wards
+                    select new { id = s.Id, name = s.Name }).ToList();
+                result.Insert(0,
+                    new { id = "", name = _translationService.GetResource("Admin.Address.SelectState") });
+                return Json(result);
+            }
+            
+            default:
+                return Json(new List<dynamic>
+                    { new { id = "", name = "Invalid division type" } });
+        }
+    }
+
     public async Task<IActionResult> AccessDenied()
     {
         var currentCustomer = _contextAccessor.WorkContext.CurrentCustomer;

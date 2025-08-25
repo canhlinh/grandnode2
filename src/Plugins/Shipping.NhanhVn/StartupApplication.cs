@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shipping.NhanhVn.Services;
 
 namespace Shipping.NhanhVn;
 
@@ -12,6 +13,7 @@ public class StartupApplication : IStartupApplication
     public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IShippingRateCalculationProvider, ShippingNhanhVnProvider>();
+        services.AddScoped<INhanhVnService, NhanhVnService>();
     }
 
     public int Priority => 10;

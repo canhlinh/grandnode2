@@ -114,7 +114,7 @@ public class FixedRateShippingProvider : IShippingRateCalculationProvider
 
     public IShipmentTracker ShipmentTracker => null;
 
-    public async Task<IList<string>> ValidateShippingForm(string shippingOption, IDictionary<string, string> data)
+    public async Task<List<string>> ValidateShippingForm(string shippingOption, IDictionary<string, string> data)
     {
         return await Task.FromResult(new List<string>());
     }

@@ -114,7 +114,7 @@ public class AddressModel : BaseEntityModel
 
     public bool DisallowUsersToChangeEmail { get; set; }
     
-    [GrandResourceDisplayName("Address.Fields.Province")]
+    [GrandResourceDisplayName("Address.Fields.DivisionVersion")]
     public int   DivisionVersion { get; set; }
     
     [GrandResourceDisplayName("Address.Fields.Province")]

@@ -1,16 +1,56 @@
 ﻿@model AddressModel
-@if (Model.CountryEnabled && Model.StateProvinceEnabled)
+@if (Model.CountryEnabled && Model.IsVietnameseAddress)
 {
     <script>
         $(document).ready(function() {
             $("#@Html.IdFor(model => model.CountryId)").change(function() {
                 var selectedItem = $(this).val();
-                var ddlStates = $("#@Html.IdFor(model => model.StateProvinceId)");
+                var ddlStates = $("#@Html.IdFor(model => model.ProvinceId)");
                 $.ajax({
                     cache: false,
                     type: "GET",
-                    url: "@(Url.Action("GetStatesByCountryId", "Home"))",
-                    data: { "countryId": selectedItem, "addSelectStateItem": "false" },
+                    url: "@(Url.Action("GetDivisions", "Home"))",
+                    data: { "parentId": selectedItem, "divisionType": "province", "version": "@Model.DivisionVersion" },
+                    success: function(data) {
+                        ddlStates.html('');
+                        $.each(data, function(id, option) {
+                            ddlStates.append($('<option></option>').val(option.id).html(option.name));
+                        });
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                    }
+                });
+            });
+            
+            $("#@Html.IdFor(model => model.ProvinceId)").change(function() {
+                var selectedItem = $(this).val();
+                var ddlStates = $("#@Html.IdFor(model => model.DistrictId)");
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: "@(Url.Action("GetDivisions", "Home"))",
+                    data: { "parentId": selectedItem, "divisionType": "district", "version": "@Model.DivisionVersion" },
+                    success: function(data) {
+                        ddlStates.html('');
+                        $.each(data, function(id, option) {
+                            ddlStates.append($('<option></option>').val(option.id).html(option.name));
+                        });
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                    }
+                });
+            });
+            
+            $("#@Html.IdFor(model => model.DistrictId)").change(function() {
+                var selectedItem = $(this).val();
+                var ddlStates = $("#@Html.IdFor(model => model.WardId)");
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: "@(Url.Action("GetDivisions", "Home"))",
+                    data: { "parentId": selectedItem, "divisionType": "ward", "version": "@Model.DivisionVersion" },
                     success: function(data) {
                         ddlStates.html('');
                         $.each(data, function(id, option) {
@@ -121,6 +161,37 @@
                 <div class="col-md-9 col-sm-9">
                     <admin-select asp-for="CountryId" asp-items="Model.AvailableCountries"/>
                     <span asp-validation-for="CountryId"></span>
+                </div>
+            </div>
+        }
+        @if (Model.IsVietnameseAddress)
+        {
+            <div class="form-group">
+                <admin-label asp-for="DivisionVersion"/>
+                <div class="col-md-9 col-sm-9">
+                    <admin-select asp-for="DivisionVersion" asp-items="EnumTranslationService.ToSelectList(Model.DivisionVersion)"/>
+                    <span asp-validation-for="DivisionVersion"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <admin-label asp-for="ProvinceId"/>
+                <div class="col-md-9 col-sm-9">
+                    <admin-select asp-for="ProvinceId" asp-items="Model.AvailableProvinces"/>
+                    <span asp-validation-for="ProvinceId"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <admin-label asp-for="DistrictId"/>
+                <div class="col-md-9 col-sm-9">
+                    <admin-select asp-for="DistrictId" asp-items="Model.AvailableDistricts"/>
+                    <span asp-validation-for="DistrictId"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <admin-label asp-for="WardId"/>
+                <div class="col-md-9 col-sm-9">
+                    <admin-select asp-for="WardId" asp-items="Model.AvailableWards"/>
+                    <span asp-validation-for="WardId"></span>
                 </div>
             </div>
         }
