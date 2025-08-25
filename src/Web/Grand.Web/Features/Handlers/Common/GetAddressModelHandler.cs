@@ -77,6 +77,7 @@ public class GetAddressModelHandler : IRequestHandler<GetAddressModel, AddressMo
             model.Company = address.Company;
             model.VatNumber = address.VatNumber;
             model.CountryId = address.CountryId;
+            model.DivisionVersion = address.DivisionVersion;
             model.ProvinceId = address.ProvinceId;
             model.DistrictId = address.DistrictId;
             model.WardId = address.WardId;
@@ -187,11 +188,11 @@ public class GetAddressModelHandler : IRequestHandler<GetAddressModel, AddressMo
                 model.IsVietnameseAddress = true;
                 model.CountryId = store.DefaultCountryId;
                 model.CountryName = country.GetTranslation(x => x.Name, language?.Id);
-                model.ProvinceVersion = 1;
+                model.DivisionVersion = _addressSettings.DivisionVersion;
                 
                 {
                     var provinces =
-                        await _countryService.GetProvincesByCountryId(model.CountryId, model.ProvinceVersion);
+                        await _countryService.GetProvincesByCountryId(model.CountryId, model.DivisionVersion);
 
                     model.AvailableStates.Add(new SelectListItem
                         { Text = _translationService.GetResource("Address.SelectState"), Value = "" });
@@ -209,7 +210,7 @@ public class GetAddressModelHandler : IRequestHandler<GetAddressModel, AddressMo
                 if (!string.IsNullOrEmpty(model.ProvinceId))
                 {
                     var districts =
-                        await _countryService.GetDistrictsByProvinceId(model.ProvinceId, model.ProvinceVersion);
+                        await _countryService.GetDistrictsByProvinceId(model.ProvinceId, model.DivisionVersion);
                     model.AvailableDistricts.Add(new SelectListItem
                         { Text = _translationService.GetResource("Address.SelectDistrict"), Value = "" });
                     foreach (var d in districts)
@@ -230,7 +231,7 @@ public class GetAddressModelHandler : IRequestHandler<GetAddressModel, AddressMo
 
                 if (!string.IsNullOrEmpty(model.DistrictId))
                 {
-                    var wards = await _countryService.GetWardsByDistrictId(model.DistrictId, model.ProvinceVersion);
+                    var wards = await _countryService.GetWardsByDistrictId(model.DistrictId, model.DivisionVersion);
                     model.AvailableWards.Add(new SelectListItem
                         { Text = _translationService.GetResource("Address.SelectWard"), Value = "" });
                     foreach (var w in wards)

@@ -23,17 +23,23 @@ public class CountryImportDataObjectTests
     private Mock<IMediator> _mediatorMock;
 
     private IRepository<Country> _repository;
+    private IRepository<Province> _provinceRepository;
+    private IRepository<District> _districtRepository;
+    private IRepository<Ward> _wardRepository;
 
     [TestInitialize]
     public void Init()
     {
         _repository = new MongoDBRepositoryTest<Country>();
+        _provinceRepository = new MongoDBRepositoryTest<Province>();
+        _districtRepository = new MongoDBRepositoryTest<District>();
+        _wardRepository = new MongoDBRepositoryTest<Ward>();
 
         _mediatorMock = new Mock<IMediator>();
         _cacheBase = new MemoryCacheBase(MemoryCacheTest.Get(), _mediatorMock.Object,
             new CacheConfig { DefaultCacheTimeMinutes = 1 });
         var accessControlConfig = new AccessControlConfig();
-        _countryService = new CountryService(_repository, _mediatorMock.Object, _cacheBase, accessControlConfig);
+        _countryService = new CountryService(_repository, _provinceRepository, _districtRepository, _wardRepository, _mediatorMock.Object, _cacheBase, accessControlConfig);
         _countryImportDataObject = new CountryImportDataObject(_countryService);
     }
 

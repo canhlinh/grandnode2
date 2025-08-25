@@ -113,4 +113,6 @@ public class AddressSettings : ISettings
     ///     Gets or sets a value indicating whether users are allowed to change their email on the address
     /// </summary>
     public bool DisallowUsersToChangeEmail { get; set; }
+    
+    public int DivisionVersion { get; set; } // Version of the division data 1: 3 levels (Province, District, Ward), 2: 2 levels (Province, Ward)
 }

@@ -19,6 +19,9 @@ public class CountryServiceTests
     private CountryService _countryService;
     private Mock<IMediator> _mediatorMock;
     private IRepository<Country> _repository;
+    private IRepository<Province> _repositoryProvince;
+    private IRepository<District> _repositoryDistrict;
+    private IRepository<Ward> _repositoryWard;
 
     [TestInitialize]
     public void Init()
@@ -28,7 +31,7 @@ public class CountryServiceTests
         _mediatorMock = new Mock<IMediator>();
         _cacheBase = new MemoryCacheBase(MemoryCacheTest.Get(), _mediatorMock.Object,
             new CacheConfig { DefaultCacheTimeMinutes = 1 });
-        _countryService = new CountryService(_repository, _mediatorMock.Object, _cacheBase, new AccessControlConfig());
+        _countryService = new CountryService(_repository, _repositoryProvince, _repositoryDistrict, _repositoryWard, _mediatorMock.Object, _cacheBase, new AccessControlConfig());
     }
 
     [TestMethod]

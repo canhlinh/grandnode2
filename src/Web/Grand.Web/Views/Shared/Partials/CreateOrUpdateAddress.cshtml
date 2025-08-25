@@ -56,7 +56,7 @@
             axios({
                 method: 'get',
                 url: "@(Url.RouteUrl("GetDistrictsByProvinceId"))",
-                params: { "provinceId": e.value, "addSelectStateItem": "true", "provinceVersion": @Model.ProvinceVersion },
+                params: { "provinceId": e.value, "addSelectStateItem": "true", "provinceVersion": @Model.DivisionVersion },
             }).then(function (response) {
                 response.data.forEach(function (id, option) {
                     const elChild = document.createElement('option');
@@ -87,7 +87,7 @@
             axios({
                 method: 'get',
                 url: "@(Url.RouteUrl("GetWardsByDistrictId"))",
-                params: { "districtId": e.value, "addSelectStateItem": "true", "provinceVersion": @Model.ProvinceVersion },
+                params: { "districtId": e.value, "addSelectStateItem": "true", "provinceVersion": @Model.DivisionVersion },
             }).then(function (response) {
                 ddlWards.innerHTML = '';
                 response.data.forEach(function (id, option) {

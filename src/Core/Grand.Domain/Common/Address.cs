@@ -42,7 +42,7 @@ public class Address : SubBaseEntity
     /// </summary>
     public string StateProvinceId { get; set; }
     
-    
+    public int DivisionVersion { get; set; } // Version of the division data 1: 3 levels (Province, District, Ward), 2: 2 levels (Province, Ward)
     public string ProvinceId { get; set; }
     public string DistrictId { get; set; }
     public string WardId { get; set; }

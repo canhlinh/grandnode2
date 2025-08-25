@@ -168,8 +168,10 @@ public static class MappingExtensions
         destination.Email = model.Email;
         destination.Company = model.Company;
         destination.VatNumber = model.VatNumber;
+        destination.DivisionVersion = model.DivisionVersion;
         destination.CountryId = !string.IsNullOrEmpty(model.CountryId) ? model.CountryId : "";
         destination.StateProvinceId = !string.IsNullOrEmpty(model.StateProvinceId) ? model.StateProvinceId : "";
+        destination.DivisionVersion = model.DivisionVersion > 0 ? model.DivisionVersion : 1;
         destination.ProvinceId = !string.IsNullOrEmpty(model.ProvinceId) ? model.ProvinceId : "";
         destination.DistrictId = !string.IsNullOrEmpty(model.DistrictId) ? model.DistrictId : "";
         destination.WardId = !string.IsNullOrEmpty(model.WardId) ? model.WardId : "";
