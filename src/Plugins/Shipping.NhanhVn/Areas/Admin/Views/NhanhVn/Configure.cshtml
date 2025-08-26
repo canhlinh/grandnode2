@@ -1,0 +1,64 @@
+﻿@{
+    Layout = "_ConfigurePlugin";
+}
+@using Shipping.NhanhVn
+@model Shipping.NhanhVn.Models.ConfigurationModel
+
+<form asp-area="Admin" asp-controller="NhanhVn" asp-action="Configure" method="post">
+    <div class="form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <div class="col-md-3 col-sm-3 text-right">
+                    <admin-label asp-for="AppId" class="control-label"/>
+                </div>
+                <div class="col-md-9 col-sm-9">
+                    <admin-input asp-for="AppId"/>
+                    <span asp-validation-for="AppId"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3 col-sm-3 text-right">
+                    <admin-label asp-for="BusinessId" class="control-label"/>
+                </div>
+                <div class="col-md-9 col-sm-9">
+                    <admin-input asp-for="BusinessId"/>
+                    <span asp-validation-for="BusinessId"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3 col-sm-3 text-right">
+                    <admin-label asp-for="SecretKey" class="control-label"/>
+                </div>
+                <div class="col-md-9 col-sm-9">
+                    <admin-input asp-for="SecretKey"/>
+                    <span asp-validation-for="SecretKey"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3 col-sm-3 text-right">
+                    <admin-label asp-for="ApiKey" class="control-label"/>
+                </div>
+                <div class="col-md-9 col-sm-9">
+                    <admin-input asp-for="ApiKey"/>
+                    <span asp-validation-for="ApiKey"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3 col-sm-3 text-right">
+                    <admin-label asp-for="DisplayOrder" class="control-label"/>
+                </div>
+                <div class="col-md-9 col-sm-9">
+                    <admin-input asp-for="DisplayOrder"/>
+                    <span asp-validation-for="DisplayOrder"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-actions">
+            <div class="row">
+                <div class="offset-md-3 offset-sm-3 col-md-9 col-sm-9">
+                    <input type="submit" name="save" class="btn green" value="@Loc["Admin.Common.Save"]"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

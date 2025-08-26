@@ -86,11 +86,13 @@ public class ShippingNhanhVnProvider : IShippingRateCalculationProvider
         var response = new GetShippingOptionResponse();
         foreach (var shippingFee in shippingFees)
         {
-            response.ShippingOptions.Add(new ShippingOption()
-            {
+            response.ShippingOptions.Add(new ShippingOption() {
                 ShippingRateProviderSystemName = ShippingNhanhVnDefaults.SystemName,
                 Name = shippingFee.Service.Name,
                 Rate = shippingFee.ShipFee,
+                Logo = shippingFee.Logo,
+                NhanhVnCarrierId = shippingFee.Carrier.Id,
+                NhanhVnServiceId = shippingFee.Service.Id,
                 Description = "",
             });   
         }

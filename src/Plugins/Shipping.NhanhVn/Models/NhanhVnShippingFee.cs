@@ -1,38 +1,75 @@
+using System.Text.Json.Serialization;
+
 namespace Shipping.NhanhVn.Models;
 
 public class NhanhVnCarrier
 {
-    public int Id { get; set; }
-    public int AccountId { get; set; }
-    public string AccountName { get; set; }
-    public string ShopId { get; set; }
+    [JsonPropertyName("id")]
+    public int Id { get; init; }
+    
+    [JsonPropertyName("accountId")]
+    public int AccountId { get; init; }
+    
+    [JsonPropertyName("accountName")]
+    public string AccountName { get; init; }
+    
+    [JsonPropertyName("shopId")]
+    public string ShopId { get; init; }
 }
 
 public class NhanhVnService
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public string Code { get; set; }
-    public string Description { get; set; }
+    [JsonPropertyName("id")]
+    public int Id { get; init; }
+    
+    [JsonPropertyName("name")]
+    public string Name { get; init; }
+    
+    [JsonPropertyName("code")]
+    public string Code { get; init; }
+    
+    [JsonPropertyName("description")]
+    public string Description { get; init; }
 }
 
 public class NhanhVnShippingFee
 {
-    public string Logo { get; set; }
-    public NhanhVnCarrier Carrier { get; set; }
-    public NhanhVnService Service { get; set; }
-    public double ShipFee { get; set; }
-    public double CodFee { get; set; }
-    public double DeclaredFee { get; set; }
-    public double CustomerShipFee { get; set; }
+    [JsonPropertyName("logo")]
+    public string Logo { get; init; }
+    
+    [JsonPropertyName("carrier")]
+    public NhanhVnCarrier Carrier { get; init; }
+    
+    [JsonPropertyName("service")]
+    public NhanhVnService Service { get; init; }
+    
+    [JsonPropertyName("shipFee")]
+    public int ShipFee { get; init; }
+    
+    [JsonPropertyName("codFee")]
+    public int CodFee { get; init; }
+    
+    [JsonPropertyName("declaredFee")]
+    public int DeclaredFee { get; init; }
+    
+    [JsonPropertyName("customerShipFee")]
+    public int CustomerShipFee { get; init; }
 }
 
 public class NhanhVnShippingFeeResponse
 {
-    public int Code { get; set; }
+    [JsonPropertyName("code")]
+    public int Code { get; init; }
     
-    public string Messages { get; set; }
-    public List<NhanhVnShippingFee> Data { get; set; }
+    [JsonPropertyName("errorCode")]
+    
+    public string ErrorCode { get; init; }
+    
+    [JsonPropertyName("messages")]
+    public string Messages { get; init; }
+    
+    [JsonPropertyName("data")]
+    public List<NhanhVnShippingFee> Data { get; init; }
 }
 
 public class NhanhVnShippingFeeRequest
@@ -45,7 +82,6 @@ public class NhanhVnShippingFeeFilters
     public int Type { get; set; } = 1;
     public int ShippingWeight { get; set; }
     public double Price { get; set; }
-    public double TotalCod { get; set; }
     public NhanhVnShippingAddress ShippingFrom { get; set; }
     public NhanhVnShippingAddress ShippingTo { get; set; }
 }

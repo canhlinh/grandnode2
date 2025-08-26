@@ -1,3 +1,4 @@
+using System.Net.Http.Json;
 using System.Text.Json;
 using Grand.Business.Core.Interfaces.Catalog.Prices;
 using Grand.Business.Core.Interfaces.Catalog.Products;
@@ -19,6 +20,7 @@ public class NhanhVnService: INhanhVnService
     private readonly IPricingService _pricingService;
     private readonly ICountryService _countryService;
     private readonly ILogger<NhanhVnService> _logger;
+    private readonly HttpClient _httpClient;
     public NhanhVnService(
         ILogger<NhanhVnService> logger,
         ShippingNhanhVnSettings settings, 
@@ -31,6 +33,7 @@ public class NhanhVnService: INhanhVnService
         _pricingService = pricingService;
         _countryService = countryService;
         _logger = logger;
+        _httpClient = new HttpClient();
     }
     
     public async Task<IList<NhanhVnShippingFee>> GetShippingFees(int weight, double price, Address from, Address to)
@@ -39,47 +42,57 @@ public class NhanhVnService: INhanhVnService
         var fromDistrict = await _countryService.GetDistrictById(from.DistrictId);
         var fromWard = await _countryService.GetWardById(from.WardId);
         if (fromProvince == null || fromDistrict == null || fromWard == null)
-            return null;
+            return [];
         var toProvince = await _countryService.GetProvinceById(to.ProvinceId);
         var toDistrict = await _countryService.GetDistrictById(to.DistrictId);
         var toWard = await _countryService.GetWardById(to.WardId);
         if (toProvince == null || toDistrict == null || toWard == null)
-            return null;
-        
-        var requestBody = new NhanhVnShippingFeeFilters
+            return [];
+
+        var requestBody = new NhanhVnShippingFeeRequest
         {
-            Type = 1,
-            ShippingWeight = weight,
-            Price = price,
-            TotalCod = 0,
-            ShippingFrom = new NhanhVnShippingAddress
+            Filters = new NhanhVnShippingFeeFilters
             {
-                CityId = fromProvince.NhanhVnId,
-                DistrictId = fromDistrict.NhanhVnId,
-                WardId = fromWard.NhanhVnId,
-                Address = from.Address1,
-                LocationVersion = $"v{from.DivisionVersion}",
-            },
-            ShippingTo = new NhanhVnShippingAddress
-            {
-                CityId = toProvince.NhanhVnId,
-                DistrictId = toDistrict.NhanhVnId,
-                WardId = toWard.NhanhVnId,
-                Address = to.Address1,
-                LocationVersion = $"v{to.DivisionVersion}",
+                Type = 1,
+                ShippingWeight = weight,
+                Price = price,
+                ShippingFrom = new NhanhVnShippingAddress
+                {
+                    CityId = fromProvince.NhanhVnId,
+                    DistrictId = fromDistrict.NhanhVnId,
+                    WardId = fromWard.NhanhVnId,
+                    Address = from.Address1,
+                    LocationVersion = $"v{from.DivisionVersion}",
+                },
+                ShippingTo = new NhanhVnShippingAddress
+                {
+                    CityId = toProvince.NhanhVnId,
+                    DistrictId = toDistrict.NhanhVnId,
+                    WardId = toWard.NhanhVnId,
+                    Address = to.Address1,
+                    LocationVersion = $"v{to.DivisionVersion}",
+                }
             }
         };
+        var debugRequest = JsonSerializer.Serialize(requestBody);
+        _logger.LogDebug("NhanhVn Shipping Fee Request: {Request}", debugRequest);
 
         var endpoint = $"{BaseApiUrl}/shipping/fee?appId={_settings.AppId}&businessId={_settings.BusinessId}";
-        var client = new HttpClient();
-        var reqContent = new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
-        var req = new HttpRequestMessage(HttpMethod.Post, endpoint);
-        req.Content = reqContent;
-        req.Headers.TryAddWithoutValidation("Authorization", _settings.ApiKey);
-        var res = await client.SendAsync(req);
-        var resContent = await res.Content.ReadAsStringAsync();
-        if (!res.IsSuccessStatusCode) return [];
-        var result = JsonSerializer.Deserialize<NhanhVnShippingFeeResponse>(resContent);
+        var request = new HttpRequestMessage(HttpMethod.Post, endpoint)
+        {
+            Content = JsonContent.Create(requestBody)
+        };
+        request.Headers.Add("Authorization", _settings.ApiKey);
+        var res = await _httpClient.SendAsync(request);
+        if (!res.IsSuccessStatusCode)
+        {
+            _logger.LogError("Error getting shipping fees from NhanhVn: {StatusCode} - {ReasonPhrase}", res.StatusCode, res.ReasonPhrase);
+            res.Content.Dispose();
+            return [];
+        }
+
+        var resBody = await res.Content.ReadAsStringAsync();
+        var result = JsonSerializer.Deserialize<NhanhVnShippingFeeResponse>(resBody);
         if (result != null && result.Code != 0) return result is { Code: 1 } ? result.Data : [];
         _logger.LogError("Error getting shipping fees from NhanhVn: {Messages}", result?.Messages);
         return [];
@@ -88,17 +101,22 @@ public class NhanhVnService: INhanhVnService
     public async Task<NhanhVnOrder> CreateOrder(NhanhVnOrderRequest orderRequest)
     {
         var endpoint = $"{BaseApiUrl}/orders?appId={_settings.AppId}&businessId={_settings.BusinessId}";
-        var client = new HttpClient();
-        var reqContent = new StringContent(JsonSerializer.Serialize(orderRequest), Encoding.UTF8, "application/json");
-        var req = new HttpRequestMessage(HttpMethod.Post, endpoint);
-        req.Content = reqContent;
-        req.Headers.TryAddWithoutValidation("Content-Type", "application/json");
-        req.Headers.TryAddWithoutValidation("Authorization", _settings.ApiKey);
-        var res = await client.SendAsync(req);
-        var resContent = await res.Content.ReadAsStringAsync();
-        if (!res.IsSuccessStatusCode) return null;
-        var result = JsonSerializer.Deserialize<NhanhVnOrderResponse>(resContent)?.Data;
-        return result;
+        var request = new HttpRequestMessage(HttpMethod.Post, endpoint)
+        {
+            Content = JsonContent.Create(orderRequest)
+        };
+        request.Headers.Add("Authorization", _settings.ApiKey);
+        var res = await _httpClient.SendAsync(request);
+        if (!res.IsSuccessStatusCode)
+        {
+            _logger.LogError("Error creating order in NhanhVn: {StatusCode} - {ReasonPhrase}", res.StatusCode,
+                res.ReasonPhrase);
+            res.Content.Dispose();
+            return null;
+        }
+        var resBody = await res.Content.ReadAsStreamAsync();
+        var result = await JsonSerializer.DeserializeAsync<NhanhVnOrderResponse>(resBody);
+        return result?.Data;
     }
     
         private async Task<double> GetShoppingCartItemWeight(ShoppingCartItem shoppingCartItem)

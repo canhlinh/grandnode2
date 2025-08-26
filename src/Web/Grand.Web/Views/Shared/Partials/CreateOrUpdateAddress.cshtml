@@ -108,6 +108,10 @@
 }
 
 <input asp-for="Id" type="hidden"/>
+@if (!Model.CountryEnabled)
+{
+    <input asp-for="CountryId" type="hidden"/>
+}
 <div class="edit-address row">
     @if (Model.NameEnabled)
     {
