@@ -20,6 +20,7 @@ using Grand.Web.Common.Models;
 using Grand.Web.Common.Security.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Wangkanai.Extensions;
 
 namespace Grand.Web.Admin.Controllers;
 
@@ -91,14 +92,14 @@ public class ShippingController : BaseAdminController
                     { Text = s.Name, Value = s.Id, Selected = s.Id == model.Address.StateProvinceId });
 
         model.Address.CountryEnabled = true;
-        model.Address.StateProvinceEnabled = true;
-        model.Address.CityEnabled = true;
+        model.Address.StateProvinceEnabled = false;
+        model.Address.CityEnabled = false;
         model.Address.StreetAddressEnabled = true;
         model.Address.ZipPostalCodeEnabled = true;
         model.Address.ZipPostalCodeRequired = true;
         model.Address.PhoneEnabled = true;
-        model.Address.FaxEnabled = true;
-        model.Address.CompanyEnabled = true;
+        model.Address.FaxEnabled = false;
+        model.Address.CompanyEnabled = false;
     }
 
     protected virtual async Task PreparePickupPointModel(PickupPointModel model)
@@ -118,14 +119,14 @@ public class ShippingController : BaseAdminController
                     { Text = s.Name, Value = s.Id, Selected = s.Id == model.Address.StateProvinceId });
 
         model.Address.CountryEnabled = true;
-        model.Address.StateProvinceEnabled = true;
-        model.Address.CityEnabled = true;
+        model.Address.StateProvinceEnabled = false;
+        model.Address.CityEnabled = false;
         model.Address.StreetAddressEnabled = true;
-        model.Address.ZipPostalCodeEnabled = true;
-        model.Address.ZipPostalCodeRequired = true;
+        model.Address.ZipPostalCodeEnabled = false;
+        model.Address.ZipPostalCodeRequired = false;
         model.Address.PhoneEnabled = true;
-        model.Address.FaxEnabled = true;
-        model.Address.CompanyEnabled = true;
+        model.Address.FaxEnabled = false;
+        model.Address.CompanyEnabled = false;
 
         model.AvailableStores.Add(new SelectListItem {
             Text = _translationService.GetResource("Admin.Configuration.Shipping.PickupPoint.SelectStore"), Value = ""
@@ -338,57 +339,57 @@ public class ShippingController : BaseAdminController
         if (states?.Count > 0)
             foreach (var s in states)
                 model.ShippingOriginAddress.AvailableStates.Add(new SelectListItem
-                    { Text = s.Name, Value = s.Id, Selected = s.Id == originAddress.StateProvinceId });
+                    { Text = s.Name, Value = s.Id, Selected = originAddress != null && s.Id == originAddress.StateProvinceId });
 
         model.ShippingOriginAddress.CountryEnabled = true;
-        model.ShippingOriginAddress.StateProvinceEnabled = true;
-        model.ShippingOriginAddress.CityEnabled = true;
+        model.ShippingOriginAddress.StateProvinceEnabled = false;
+        model.ShippingOriginAddress.CityEnabled = false;
         model.ShippingOriginAddress.StreetAddressEnabled = true;
-        model.ShippingOriginAddress.ZipPostalCodeEnabled = true;
-        model.ShippingOriginAddress.ZipPostalCodeRequired = true;
+        model.ShippingOriginAddress.ZipPostalCodeEnabled = false;
+        model.ShippingOriginAddress.ZipPostalCodeRequired = false;
         model.ShippingOriginAddress.AddressTypeEnabled = false;
 
         if (originAddress != null && originAddress.CountryId != null)
         {
+            model.ShippingOriginAddress.DivisionVersion = DivisionVersion.V1;
+            const int divisionVersion = (int)DivisionVersion.V1;
             var country = await _countryService.GetCountryById(originAddress.CountryId);
-            if (country.TwoLetterIsoCode == "VN")
+            if (country.TwoLetterIsoCode != "VN") return View(model);
+            var provinces = await _countryService.GetProvincesByCountryId(country.Id, divisionVersion);
+            if (provinces?.Count > 0)
             {
-                var provinces = await _countryService.GetStateProvincesByCountryId(country.Id);
-                if (provinces?.Count > 0)
-                {
+                model.ShippingOriginAddress.AvailableProvinces.Add(new SelectListItem
+                    { Text = _translationService.GetResource("Admin.Address.SelectProvince"), Value = "" });
+                foreach (var p in provinces)
                     model.ShippingOriginAddress.AvailableProvinces.Add(new SelectListItem
-                        { Text = _translationService.GetResource("Admin.Address.SelectProvince"), Value = "" });
-                    foreach (var p in provinces)
-                        model.ShippingOriginAddress.AvailableProvinces.Add(new SelectListItem
-                            { Text = p.Name, Value = p.Id, Selected = p.Id == originAddress.ProvinceId });
-                }
-                if (!string.IsNullOrEmpty(originAddress.ProvinceId))
-                {
-                    var districts = await _countryService.GetDistrictsByProvinceId(originAddress.ProvinceId);
-                    if (districts?.Count > 0)
-                    {
-                        model.ShippingOriginAddress.AvailableDistricts.Add(new SelectListItem
-                            { Text = _translationService.GetResource("Admin.Address.SelectDistrict"), Value = "" });
-                        foreach (var d in districts)
-                            model.ShippingOriginAddress.AvailableDistricts.Add(new SelectListItem
-                                { Text = d.Name, Value = d.Id, Selected = d.Id == originAddress.DistrictId });
-                    }
-                }
-                if (!string.IsNullOrEmpty(originAddress.DistrictId))
-                {
-                    var wards = await _countryService.GetWardsByDistrictId(originAddress.DistrictId);
-                    if (wards?.Count > 0)
-                    {
-                        model.ShippingOriginAddress.AvailableWards.Add(new SelectListItem
-                            { Text = _translationService.GetResource("Admin.Address.SelectWard"), Value = "" });
-                        foreach (var w in wards)
-                            model.ShippingOriginAddress.AvailableWards.Add(new SelectListItem
-                                { Text = w.Name, Value = w.Id, Selected = w.Id == originAddress.WardId });
-                    }
-                }
-
-                model.ShippingOriginAddress.IsVietnameseAddress = true;
+                        { Text = p.Name, Value = p.Id, Selected = p.Id == originAddress.ProvinceId });
             }
+            if (!string.IsNullOrEmpty(originAddress.ProvinceId))
+            {
+                var districts = await _countryService.GetDistrictsByProvinceId(originAddress.ProvinceId, divisionVersion);
+                if (districts?.Count > 0)
+                {
+                    model.ShippingOriginAddress.AvailableDistricts.Add(new SelectListItem
+                        { Text = _translationService.GetResource("Admin.Address.SelectDistrict"), Value = "" });
+                    foreach (var d in districts)
+                        model.ShippingOriginAddress.AvailableDistricts.Add(new SelectListItem
+                            { Text = d.Name, Value = d.Id, Selected = d.Id == originAddress.DistrictId });
+                }
+            }
+            if (!string.IsNullOrEmpty(originAddress.DistrictId))
+            {
+                var wards = await _countryService.GetWardsByDistrictId(originAddress.DistrictId, divisionVersion);
+                if (wards?.Count > 0)
+                {
+                    model.ShippingOriginAddress.AvailableWards.Add(new SelectListItem
+                        { Text = _translationService.GetResource("Admin.Address.SelectWard"), Value = "" });
+                    foreach (var w in wards)
+                        model.ShippingOriginAddress.AvailableWards.Add(new SelectListItem
+                            { Text = w.Name, Value = w.Id, Selected = w.Id == originAddress.WardId });
+                }
+            }
+
+            model.ShippingOriginAddress.IsVietnameseAddress = true;
         }
 
         return View(model);

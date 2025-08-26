@@ -198,17 +198,17 @@ public class HomeController : BaseAdminController
 
     [AcceptVerbs("Get")]
     public async Task<IActionResult> GetDivisions([FromServices] ICountryService countryService,
-        string parentId, string divisionType, int version)
+        string parentId, string divisionType, DivisionVersion version)
     {
         if (string.IsNullOrEmpty(parentId))
             return Json(new List<dynamic>
                 { new { id = "", name = _translationService.GetResource("Address.SelectState") } });
-
+        int divisionVersion = (int) version;
         switch (divisionType)
         {
             case "province":
                 {
-                    var provinces = await countryService.GetProvincesByCountryId(parentId, version);
+                    var provinces = await countryService.GetProvincesByCountryId(parentId, divisionVersion);
                     var result = (from s in provinces
                         select new { id = s.Id, name = s.Name }).ToList();
                     result.Insert(0,
@@ -217,7 +217,7 @@ public class HomeController : BaseAdminController
                 }
             case "district":
             {
-                var districts = await countryService.GetDistrictsByProvinceId(parentId, version);
+                var districts = await countryService.GetDistrictsByProvinceId(parentId, divisionVersion);
                 var result = (from s in districts
                     select new { id = s.Id, name = s.Name }).ToList(); 
                 result.Insert(0,
@@ -226,7 +226,7 @@ public class HomeController : BaseAdminController
             }
             case "ward":
             {
-                var wards = await countryService.GetWardsByDistrictId(parentId, version);
+                var wards = await countryService.GetWardsByDistrictId(parentId, divisionVersion);
                 var result = (from s in wards
                     select new { id = s.Id, name = s.Name }).ToList();
                 result.Insert(0,

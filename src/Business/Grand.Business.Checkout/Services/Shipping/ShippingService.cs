@@ -45,7 +45,7 @@ public class ShippingService : IShippingService
     private readonly IEnumerable<IShippingRateCalculationProvider> _shippingRateCalculationProvider;
     private readonly ShippingSettings _shippingSettings;
     private readonly ShippingProviderSettings _shippingProviderSettings;
-
+    
     #endregion
 
     #region Shipping rate  methods

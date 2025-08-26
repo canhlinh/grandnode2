@@ -38,9 +38,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="logo.jpg">
+		<None Update="logo.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <AdditionalFiles Include="Areas\Admin\Views\NhanhVn\Configure.cshtml" />
+	  <AdditionalFiles Include="Areas\Admin\Views\_ViewImports.cshtml" />
 	</ItemGroup>
 
 </Project>

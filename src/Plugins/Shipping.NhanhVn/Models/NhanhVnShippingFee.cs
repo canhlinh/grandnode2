@@ -30,6 +30,8 @@ public class NhanhVnShippingFee
 public class NhanhVnShippingFeeResponse
 {
     public int Code { get; set; }
+    
+    public string Messages { get; set; }
     public List<NhanhVnShippingFee> Data { get; set; }
 }
 

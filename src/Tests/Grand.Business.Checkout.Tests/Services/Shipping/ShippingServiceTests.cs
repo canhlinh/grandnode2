@@ -1,4 +1,6 @@
 ﻿using Grand.Business.Checkout.Services.Shipping;
+using Grand.Business.Core.Interfaces.Catalog.Prices;
+using Grand.Business.Core.Interfaces.Catalog.Products;
 using Grand.Business.Core.Interfaces.Checkout.Shipping;
 using Grand.Business.Core.Interfaces.Common.Directory;
 using Grand.Business.Core.Interfaces.Common.Localization;
@@ -19,6 +21,8 @@ public class ShippingServiceTests
     private Mock<ICountryService> _countryServiceMokc;
     private Mock<ILogger<ShippingService>> _loggerMock;
     private Mock<IShippingRateCalculationProvider> _rateProviderMock;
+    private Mock<IProductService> _productServiceMock;
+    private Mock<IPricingService> _pricingServiceMock;
     private IShippingService _service;
     private ShippingProviderSettings _shippingProviderSettings;
     private ShippingSettings _shippingSettings;
@@ -34,7 +38,8 @@ public class ShippingServiceTests
         _shippingSettings = new ShippingSettings();
         _rateProviderMock = new Mock<IShippingRateCalculationProvider>();
         _service = new ShippingService(_loggerMock.Object, _countryServiceMokc.Object,
-            new List<IShippingRateCalculationProvider> { _rateProviderMock.Object }, _shippingProviderSettings,
+            new List<IShippingRateCalculationProvider> { _rateProviderMock.Object }, 
+            _shippingProviderSettings,
             _shippingSettings);
     }
 

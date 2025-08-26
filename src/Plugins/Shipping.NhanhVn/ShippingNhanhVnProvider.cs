@@ -1,12 +1,16 @@
 using Grand.Business.Core.Enums.Checkout;
+using Grand.Business.Core.Interfaces.Checkout.Orders;
 using Grand.Business.Core.Interfaces.Checkout.Shipping;
+using Grand.Business.Core.Interfaces.Common.Configuration;
 using Grand.Business.Core.Interfaces.Common.Directory;
 using Grand.Business.Core.Interfaces.Common.Localization;
 using Grand.Business.Core.Interfaces.Customers;
 using Grand.Business.Core.Utilities.Checkout;
+using Grand.Domain.Common;
 using Grand.Domain.Orders;
 using Grand.Domain.Shipping;
 using Grand.Infrastructure;
+using Shipping.NhanhVn.Services;
 
 namespace Shipping.NhanhVn;
 
@@ -17,7 +21,8 @@ public class ShippingNhanhVnProvider : IShippingRateCalculationProvider
     private readonly ICustomerService _customerService;
     private readonly ICountryService _countryService;
     private readonly ICurrencyService _currencyService;
-
+    private readonly ISettingService _settingService;
+    private readonly INhanhVnService _nhanhVnService;
     private readonly ShippingNhanhVnSettings _shippingNhanhVnSettings;
 
     public ShippingNhanhVnProvider(
@@ -26,6 +31,8 @@ public class ShippingNhanhVnProvider : IShippingRateCalculationProvider
         ICustomerService customerService,
         ICountryService countryService,
         ICurrencyService currencyService,
+        ISettingService settingService,
+        INhanhVnService nhanhVnService,
         ShippingNhanhVnSettings shippingNhanhVnSettings
         )
     {
@@ -34,6 +41,8 @@ public class ShippingNhanhVnProvider : IShippingRateCalculationProvider
         _customerService = customerService;
         _countryService = countryService;
         _currencyService = currencyService;
+        _settingService = settingService;
+        _nhanhVnService = nhanhVnService;
         _shippingNhanhVnSettings = shippingNhanhVnSettings;
     }
     
@@ -52,9 +61,40 @@ public class ShippingNhanhVnProvider : IShippingRateCalculationProvider
     
     #region Methods
     
-    public Task<GetShippingOptionResponse> GetShippingOptions(GetShippingOptionRequest getShippingOptionRequest)
+    public async Task<GetShippingOptionResponse> GetShippingOptions(GetShippingOptionRequest getShippingOptionRequest)
     {
+        var shippingSettings = await _settingService.LoadSetting<ShippingSettings>(getShippingOptionRequest.StoreId);
+        var fromAddress = shippingSettings.ShippingOriginAddress;
+        if (fromAddress == null)
+            throw new Exception("Shipping origin address is not set");
+        if (string.IsNullOrEmpty(fromAddress.ProvinceId) || string.IsNullOrEmpty(fromAddress.DistrictId) || string.IsNullOrEmpty(fromAddress.WardId))
+            throw new Exception("Shipping origin address is not set properly. Province, District and Ward are required");
+        if (getShippingOptionRequest.ShippingAddress == null)
+            throw new Exception("Shipping address is not set");
+        if (getShippingOptionRequest.ShippingAddress.CountryId == null)
+            throw new Exception("Shipping address is not set properly. Country is required");
+        var country = await _countryService.GetCountryById(getShippingOptionRequest.ShippingAddress.CountryId);
+        if (country == null)
+            throw new Exception("Shipping address is not set properly. Country is required");
+        if (!country.AllowsShipping)
+            throw new Exception("Shipping is not allowed to the country");
+
+        var shippingWeight = await _nhanhVnService.GetShippingWeight(getShippingOptionRequest.Items);
+        var shippingTotal = await _nhanhVnService.GetShippingSubtotal(getShippingOptionRequest.Items);
+        var shippingFees = await _nhanhVnService.GetShippingFees((int)shippingWeight, shippingTotal, fromAddress, getShippingOptionRequest.ShippingAddress);
+
         var response = new GetShippingOptionResponse();
+        foreach (var shippingFee in shippingFees)
+        {
+            response.ShippingOptions.Add(new ShippingOption()
+            {
+                ShippingRateProviderSystemName = ShippingNhanhVnDefaults.SystemName,
+                Name = shippingFee.Service.Name,
+                Rate = shippingFee.ShipFee,
+                Description = "",
+            });   
+        }
+
         response.ShippingOptions.Add(new ShippingOption() {
             ShippingRateProviderSystemName = ShippingNhanhVnDefaults.SystemName,
             Name = "Viettel Post Shipping",
@@ -69,7 +109,7 @@ public class ShippingNhanhVnProvider : IShippingRateCalculationProvider
             Description = "",
             Logo = "https://carrier.nvncdn.com/carrier/carr_1692352251_813.png",
         });
-        return Task.FromResult(response);
+        return await Task.FromResult(response);
     }
 
     public Task<bool> HideShipmentMethods(IList<ShoppingCartItem> cart)

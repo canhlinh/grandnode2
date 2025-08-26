@@ -35,7 +35,6 @@ public class OrderCalculationService : IOrderCalculationService
     /// <summary>
     ///     Ctor
     /// </summary>
-    /// <param name="workContext">Work context</param>
     /// <param name="priceCalculationService">Price calculation service</param>
     /// <param name="taxService">Tax service</param>
     /// <param name="shippingService">Shipping service</param>
@@ -680,7 +679,7 @@ public class OrderCalculationService : IOrderCalculationService
                 SystemCustomerFieldNames.SelectedPaymentMethod,
                 _contextAccessor.StoreContext.CurrentStore.Id);
 
-        //order sub total (items + checkout attributes)
+        //order subtotal (items + checkout attributes)
         double subTotalTaxTotal = 0;
 
         var shoppingCartSubTotal = await GetShoppingCartSubTotal(cart, false);
@@ -830,7 +829,7 @@ public class OrderCalculationService : IOrderCalculationService
         var discountAmount = totalDiscount.orderTotalDiscount;
         var appliedDiscounts = totalDiscount.appliedDiscounts;
 
-        //sub totals with discount        
+        //subtotals with discount        
         if (resultTemp < discountAmount)
             discountAmount = resultTemp;
 
@@ -973,6 +972,5 @@ public class OrderCalculationService : IOrderCalculationService
 
         return loyaltyPoints >= _loyaltyPointsSettings.MinimumLoyaltyPointsToUse;
     }
-
     #endregion
 }
