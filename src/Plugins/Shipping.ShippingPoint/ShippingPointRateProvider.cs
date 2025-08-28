@@ -92,7 +92,7 @@ public class ShippingPointRateProvider : IShippingRateCalculationProvider
         return await Task.FromResult(false);
     }
 
-    public async Task<List<string>> ValidateShippingForm(string shippingOption, IDictionary<string, string> data)
+    public async Task<IList<string>> ValidateShippingForm(string shippingOption, IDictionary<string, string> data)
     {
         data.TryGetValue("selectedShippingOption", out var shippingOptionId);
 

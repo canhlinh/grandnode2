@@ -1,22 +1,6 @@
 using System.Text.Json.Serialization;
 
 namespace Shipping.NhanhVn.Models;
-
-public class NhanhVnCarrier
-{
-    [JsonPropertyName("id")]
-    public int Id { get; init; }
-    
-    [JsonPropertyName("accountId")]
-    public int AccountId { get; init; }
-    
-    [JsonPropertyName("accountName")]
-    public string AccountName { get; init; }
-    
-    [JsonPropertyName("shopId")]
-    public string ShopId { get; init; }
-}
-
 public class NhanhVnService
 {
     [JsonPropertyName("id")]
@@ -38,7 +22,7 @@ public class NhanhVnShippingFee
     public string Logo { get; init; }
     
     [JsonPropertyName("carrier")]
-    public NhanhVnCarrier Carrier { get; init; }
+    protected NhanhVnCarrier Carrier { get; init; }
     
     [JsonPropertyName("service")]
     public NhanhVnService Service { get; init; }
@@ -54,6 +38,21 @@ public class NhanhVnShippingFee
     
     [JsonPropertyName("customerShipFee")]
     public int CustomerShipFee { get; init; }
+    
+    protected class NhanhVnCarrier
+    {
+        [JsonPropertyName("id")]
+        public int Id { get; init; }
+    
+        [JsonPropertyName("accountId")]
+        public int AccountId { get; init; }
+    
+        [JsonPropertyName("accountName")]
+        public string AccountName { get; init; }
+    
+        [JsonPropertyName("shopId")]
+        public string ShopId { get; init; }
+    }
 }
 
 public class NhanhVnShippingFeeResponse

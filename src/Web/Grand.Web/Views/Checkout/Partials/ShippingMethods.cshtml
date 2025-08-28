@@ -7,7 +7,9 @@
                     <label class="custom-control custom-checkbox">
                         <input :id="'shippingoption_' + index" type="radio"
                                onchange="vmorder.loadPartialView(value);"
-                               @@click="vmorder.selectedShippingMethod = index; vmorder.ShippingMethodError = undefined"
+                               @@click="vmorder.selectedShippingMethod = index; vmorder.ShippingMethodError = undefined;
+                                        document.getElementById('shipping_carrier').value = shippingMethod.ShippingOption.NhanhVnCarrierId;
+                                        document.getElementById('shipping_service').value = shippingMethod.ShippingOption.NhanhVnServiceId;"
                                name="shippingoption"
                                :data-order="index"
                                :value="shippingMethod.Name + ':' + shippingMethod.ShippingRateProviderSystemName"
@@ -27,6 +29,14 @@
                     </label>
                 </li>
             </ul>
+            <input hidden="hidden" :id="'shipping_carrier'" type="text"
+                   name="data[carrier_id]"
+                   :value="vmorder.ShippingMethods.find(m => m.Selected)?.ShippingOption?.NhanhVnCarrierId || ''"
+                   />
+            <input hidden="hidden" :id="'shipping_service'" type="text"
+                   name="data[service_id]"
+                   :value="vmorder.ShippingMethods.find(m => m.Selected)?.ShippingOption?.NhanhVnServiceId || ''"
+                   />
             <template v-if="vmorder.ShippingMethodError !== null && vmorder.ShippingMethodError !== undefined">
                 <div class="alert alert-info">{{vmorder.ShippingMethodError}}</div>
             </template>

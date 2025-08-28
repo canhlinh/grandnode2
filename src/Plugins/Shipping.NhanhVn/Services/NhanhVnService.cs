@@ -4,10 +4,12 @@ using Grand.Business.Core.Interfaces.Catalog.Prices;
 using Grand.Business.Core.Interfaces.Catalog.Products;
 using Grand.Business.Core.Interfaces.Common.Directory;
 using Grand.Business.Core.Utilities.Checkout;
+using Grand.Data;
 using Grand.Domain.Catalog;
 using Grand.Domain.Common;
 using Grand.Domain.Orders;
 using Microsoft.Extensions.Logging;
+using Shipping.NhanhVn.Domain;
 using Shipping.NhanhVn.Models;
 
 namespace Shipping.NhanhVn.Services;
@@ -21,9 +23,12 @@ public class NhanhVnService: INhanhVnService
     private readonly ICountryService _countryService;
     private readonly ILogger<NhanhVnService> _logger;
     private readonly HttpClient _httpClient;
+    private readonly IRepository<NhanhVnCarrier> _nhanhVnCarrierRepository;
+    
     public NhanhVnService(
         ILogger<NhanhVnService> logger,
         ShippingNhanhVnSettings settings, 
+        IRepository<NhanhVnCarrier> nhanhVnCarrierRepository,
         IProductService productService, 
         IPricingService pricingService, 
         ICountryService countryService)
@@ -34,6 +39,7 @@ public class NhanhVnService: INhanhVnService
         _countryService = countryService;
         _logger = logger;
         _httpClient = new HttpClient();
+        _nhanhVnCarrierRepository = nhanhVnCarrierRepository;
     }
     
     public async Task<IList<NhanhVnShippingFee>> GetShippingFees(int weight, double price, Address from, Address to)
@@ -181,5 +187,11 @@ public class NhanhVnService: INhanhVnService
         }
 
         return subTotal;
+    }
+    
+    public async Task<IList<NhanhVnCarrier>> GetAllCarriers()
+    {
+        // return await _nhanhVnCarrierRepository.Table.ToListAsync();
+        return new List<NhanhVnCarrier>();
     }
 }

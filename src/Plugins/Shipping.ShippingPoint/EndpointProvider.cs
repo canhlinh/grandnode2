@@ -10,7 +10,7 @@ public class EndpointProvider : IEndpointProvider
     {
         endpointRouteBuilder.MapControllerRoute("Plugins.ShippingPoint.Points",
             "Plugins/SelectedShippingPoint/Points",
-            new { controller = "SelectedShippingCarrierController", action = "Points" }
+            new { controller = "SelectedShippingPoint", action = "Points" }
         );
     }
 
