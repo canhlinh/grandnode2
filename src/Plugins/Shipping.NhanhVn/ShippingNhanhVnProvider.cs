@@ -129,8 +129,12 @@ public class ShippingNhanhVnProvider : IShippingRateCalculationProvider
             throw new ArgumentException("carrierId or serviceId is empty");
         var shippingCarrier = await _nhanhVnService.GetCarrier(int.Parse(carrierId));
         if (shippingCarrier == null)
-            throw new ArgumentException("carrierId or serviceId is empty");
+            throw new ArgumentException("Invalid carrierId");
         
+        var found = shippingCarrier.Services.Any(service => service.Id == int.Parse(serviceId));
+        if (!found)
+            throw new ArgumentException("Invalid serviceId");
+
         var shippingService = shippingOption.Split([':'])[0];
         var shippingCarrierName = shippingService.Split(['-'])[0].Trim();
         if (shippingCarrierName != shippingCarrier.Name)
