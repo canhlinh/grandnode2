@@ -10,4 +10,8 @@ public interface INhanhVnService
     
     Task<double> GetShippingWeight(IList<GetShippingOptionRequest.PackageItem> items);
     Task<double> GetShippingSubtotal(IList<GetShippingOptionRequest.PackageItem> items);
+
+    Task<IList<NhanhVnCarrier>> GetAllCarriers();
+
+    Task<NhanhVnCarrier> GetCarrier(int carrierId);
 }

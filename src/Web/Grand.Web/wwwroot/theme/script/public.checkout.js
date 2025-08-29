@@ -27,6 +27,8 @@ var vmorder = new Vue({
             // shipping method
             ShippingMethods: null,
             ShippingMethodWarnings: null,
+            ShippingCarrierId: null,
+            ShippingServiceId: null,
             // payment methods
             DisplayLoyaltyPoints: null,
             PaymentMethods: null,
@@ -220,8 +222,14 @@ var vmorder = new Vue({
                                 } else {
                                     index = 0;
                                 }
-                                var elem = model.ShippingMethods[index].Name + ':' + model.ShippingMethods[index].ShippingRateProviderSystemName;
+                                const elem = model.ShippingMethods[index].Name + ':' + model.ShippingMethods[index].ShippingRateProviderSystemName;
                                 vmorder.loadPartialView(elem);
+                            }
+                            for (let i = 0; i < model.ShippingMethods.length; i++) {
+                                if (model.ShippingMethods[i].Selected && model.ShippingMethods[i].ShippingOption.NhanhVnCarrierId) {
+                                    vmorder.ShippingCarrierId = model.ShippingMethods[i].ShippingOption.NhanhVnCarrierId;
+                                    vmorder.ShippingServiceId = model.ShippingMethods[i].ShippingOption.NhanhVnServiceId;
+                                }
                             }
                             vmorder.updateTotals();
                         }
@@ -856,7 +864,13 @@ var vmorder = new Vue({
                 left: 0,
                 behavior: 'smooth'
             });
-        }
+        },
+        selectShippingMethod(index) {
+            if (!this.ShippingMethods) return;
+            this.ShippingMethods.forEach((method, i) => {
+                method.Selected = (i === index);
+            });
+        },
     },
     created() {
         this.vmCartUrl();

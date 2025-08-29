@@ -4,17 +4,16 @@ using Grand.Business.Core.Interfaces.Catalog.Prices;
 using Grand.Business.Core.Interfaces.Catalog.Products;
 using Grand.Business.Core.Interfaces.Common.Directory;
 using Grand.Business.Core.Utilities.Checkout;
-using Grand.Data;
 using Grand.Domain.Catalog;
 using Grand.Domain.Common;
 using Grand.Domain.Orders;
+using Grand.Infrastructure.Caching;
 using Microsoft.Extensions.Logging;
-using Shipping.NhanhVn.Domain;
 using Shipping.NhanhVn.Models;
 
 namespace Shipping.NhanhVn.Services;
 
-public class NhanhVnService: INhanhVnService
+public class NhanhVnService : INhanhVnService
 {
     private const string BaseApiUrl = "https://pos.open.nhanh.vn/v3.0";
     private readonly ShippingNhanhVnSettings _settings;
@@ -23,25 +22,25 @@ public class NhanhVnService: INhanhVnService
     private readonly ICountryService _countryService;
     private readonly ILogger<NhanhVnService> _logger;
     private readonly HttpClient _httpClient;
-    private readonly IRepository<NhanhVnCarrier> _nhanhVnCarrierRepository;
-    
+    private readonly ICacheBase _cache;
+
     public NhanhVnService(
         ILogger<NhanhVnService> logger,
-        ShippingNhanhVnSettings settings, 
-        IRepository<NhanhVnCarrier> nhanhVnCarrierRepository,
-        IProductService productService, 
-        IPricingService pricingService, 
+        ICacheBase cache,
+        ShippingNhanhVnSettings settings,
+        IProductService productService,
+        IPricingService pricingService,
         ICountryService countryService)
     {
         _settings = settings;
+        _cache = cache;
         _productService = productService;
         _pricingService = pricingService;
         _countryService = countryService;
         _logger = logger;
         _httpClient = new HttpClient();
-        _nhanhVnCarrierRepository = nhanhVnCarrierRepository;
     }
-    
+
     public async Task<IList<NhanhVnShippingFee>> GetShippingFees(int weight, double price, Address from, Address to)
     {
         var fromProvince = await _countryService.GetProvinceById(from.ProvinceId);
@@ -80,8 +79,6 @@ public class NhanhVnService: INhanhVnService
                 }
             }
         };
-        var debugRequest = JsonSerializer.Serialize(requestBody);
-        _logger.LogDebug("NhanhVn Shipping Fee Request: {Request}", debugRequest);
 
         var endpoint = $"{BaseApiUrl}/shipping/fee?appId={_settings.AppId}&businessId={_settings.BusinessId}";
         var request = new HttpRequestMessage(HttpMethod.Post, endpoint)
@@ -92,7 +89,8 @@ public class NhanhVnService: INhanhVnService
         var res = await _httpClient.SendAsync(request);
         if (!res.IsSuccessStatusCode)
         {
-            _logger.LogError("Error getting shipping fees from NhanhVn: {StatusCode} - {ReasonPhrase}", res.StatusCode, res.ReasonPhrase);
+            _logger.LogError("Error getting shipping fees from NhanhVn: {StatusCode} - {ReasonPhrase}", res.StatusCode,
+                res.ReasonPhrase);
             res.Content.Dispose();
             return [];
         }
@@ -103,7 +101,7 @@ public class NhanhVnService: INhanhVnService
         _logger.LogError("Error getting shipping fees from NhanhVn: {Messages}", result?.Messages);
         return [];
     }
-    
+
     public async Task<NhanhVnOrder> CreateOrder(NhanhVnOrderRequest orderRequest)
     {
         var endpoint = $"{BaseApiUrl}/orders?appId={_settings.AppId}&businessId={_settings.BusinessId}";
@@ -120,12 +118,13 @@ public class NhanhVnService: INhanhVnService
             res.Content.Dispose();
             return null;
         }
+
         var resBody = await res.Content.ReadAsStreamAsync();
         var result = await JsonSerializer.DeserializeAsync<NhanhVnOrderResponse>(resBody);
         return result?.Data;
     }
-    
-        private async Task<double> GetShoppingCartItemWeight(ShoppingCartItem shoppingCartItem)
+
+    private async Task<double> GetShoppingCartItemWeight(ShoppingCartItem shoppingCartItem)
     {
         ArgumentNullException.ThrowIfNull(shoppingCartItem);
 
@@ -162,7 +161,7 @@ public class NhanhVnService: INhanhVnService
         var weight = product.Weight + attributesTotalWeight;
         return weight;
     }
-    
+
     public virtual async Task<double> GetShippingWeight(IList<GetShippingOptionRequest.PackageItem> items)
     {
         double totalWeight = 0;
@@ -171,7 +170,7 @@ public class NhanhVnService: INhanhVnService
             totalWeight += await GetShoppingCartItemWeight(item.ShoppingCartItem) * item.GetQuantity();
         return totalWeight;
     }
-    
+
     public virtual async Task<double> GetShippingSubtotal(IList<GetShippingOptionRequest.PackageItem> items)
     {
         double subTotal = 0;
@@ -188,10 +187,34 @@ public class NhanhVnService: INhanhVnService
 
         return subTotal;
     }
-    
+
     public async Task<IList<NhanhVnCarrier>> GetAllCarriers()
     {
-        // return await _nhanhVnCarrierRepository.Table.ToListAsync();
-        return new List<NhanhVnCarrier>();
+        var cacheKey = $"Shipping.NhanhVn.Carriers.All-{_settings.AppId}-{_settings.BusinessId}";
+        return await _cache.GetAsync(cacheKey, async () =>
+        {
+            var endpoint = $"{BaseApiUrl}/shipping/carrier?appId={_settings.AppId}&businessId={_settings.BusinessId}";
+            var request = new HttpRequestMessage(HttpMethod.Post, endpoint);
+            request.Headers.Add("Authorization", _settings.ApiKey);
+            var res = await _httpClient.SendAsync(request);
+            if (!res.IsSuccessStatusCode)
+            {
+                _logger.LogError("Error getting carriers from NhanhVn: {StatusCode} - {ReasonPhrase}", res.StatusCode,
+                    res.ReasonPhrase);
+                res.Content.Dispose();
+                return [];
+            }
+
+            var resBody = await res.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<NhanhVnCarrierResponse>(resBody);
+            if (result != null && result.Code != 0) return result is { Code: 1 } ? result.Data : [];
+            return [];
+        }, 24 * 60 * 60);
+    }
+
+    public async Task<NhanhVnCarrier> GetCarrier(int carrierId)
+    {
+        var carriers = await GetAllCarriers();
+        return carriers.FirstOrDefault(x => x.Id == carrierId);
     }
 }

@@ -15,8 +15,8 @@ public class ShippingNhanhVnPlugin(
     public override async Task Install()
     {
         //locales       
-        await pluginTranslateResource.AddOrUpdatePluginTranslateResource("Shipping.NhanhVn.FriendlyName", "NhanhVn");
-        await pluginTranslateResource.AddOrUpdatePluginTranslateResource("Shipping.NhanhVn.PluginName", "Shipping NhanhVn");
+        await pluginTranslateResource.AddOrUpdatePluginTranslateResource(ShippingNhanhVnDefaults.FriendlyName, "NhanhVn");
+        await pluginTranslateResource.AddOrUpdatePluginTranslateResource(ShippingNhanhVnDefaults.PluginName, "Shipping NhanhVn");
         await pluginTranslateResource.AddOrUpdatePluginTranslateResource("Shipping.NhanhVn.PluginDescription", "Choose a place where you can pick up your order");
         await pluginTranslateResource.AddOrUpdatePluginTranslateResource("Shipping.NhanhVn.Fields.Description", "Description");
 
@@ -28,8 +28,8 @@ public class ShippingNhanhVnPlugin(
     /// </summary>
     public override async Task Uninstall()
     {
-        await pluginTranslateResource.DeletePluginTranslationResource("Shipping.NhanhVn.FriendlyName");
-        await pluginTranslateResource.DeletePluginTranslationResource("Shipping.NhanhVn.PluginName");
+        await pluginTranslateResource.DeletePluginTranslationResource(ShippingNhanhVnDefaults.FriendlyName);
+        await pluginTranslateResource.DeletePluginTranslationResource(ShippingNhanhVnDefaults.PluginName);
         await pluginTranslateResource.DeletePluginTranslationResource("Shipping.NhanhVn.PluginDescription");
         await pluginTranslateResource.DeletePluginTranslationResource("Shipping.NhanhVn.Fields.Description");
         await base.Uninstall();

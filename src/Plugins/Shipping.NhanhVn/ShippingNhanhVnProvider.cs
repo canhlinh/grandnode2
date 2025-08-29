@@ -7,6 +7,7 @@ using Grand.Business.Core.Interfaces.Common.Localization;
 using Grand.Business.Core.Interfaces.Customers;
 using Grand.Business.Core.Utilities.Checkout;
 using Grand.Domain.Common;
+using Grand.Domain.Customers;
 using Grand.Domain.Orders;
 using Grand.Domain.Shipping;
 using Grand.Infrastructure;
@@ -86,14 +87,17 @@ public class ShippingNhanhVnProvider : IShippingRateCalculationProvider
         var response = new GetShippingOptionResponse();
         foreach (var shippingFee in shippingFees)
         {
+            var carrier = await _nhanhVnService.GetCarrier(shippingFee.Carrier.Id);
+            if (carrier == null) continue;
+            
             response.ShippingOptions.Add(new ShippingOption() {
                 ShippingRateProviderSystemName = ShippingNhanhVnDefaults.SystemName,
-                Name = shippingFee.Service.Name,
+                Name = $"{carrier.Name} - {shippingFee.Service.Name}",
                 Rate = shippingFee.ShipFee,
                 Logo = shippingFee.Logo,
                 NhanhVnCarrierId = shippingFee.Carrier.Id,
                 NhanhVnServiceId = shippingFee.Service.Id,
-                Description = "",
+                Description = ""
             });   
         }
         return await Task.FromResult(response);
@@ -111,6 +115,27 @@ public class ShippingNhanhVnProvider : IShippingRateCalculationProvider
 
     public async Task<IList<string>> ValidateShippingForm(string shippingOption, IDictionary<string, string> data)
     {
+                
+        if (string.IsNullOrEmpty(shippingOption)) 
+            return new List<string> { _translationService.GetResource("Plugins.Shipping.NhanhVn.SelectBeforeProceed") };
+        
+        var shippingMethodName = shippingOption.Split([':'])[1];
+        if (shippingMethodName != ShippingNhanhVnDefaults.ProviderSystemName)
+            throw new ArgumentException("shippingMethodName");
+        
+        data.TryGetValue("carrier_id", out var carrierId);
+        data.TryGetValue("service_id", out var serviceId);
+        if (string.IsNullOrEmpty(carrierId) || string.IsNullOrEmpty(serviceId))
+            throw new ArgumentException("carrierId or serviceId is empty");
+        var shippingCarrier = await _nhanhVnService.GetCarrier(int.Parse(carrierId));
+        if (shippingCarrier == null)
+            throw new ArgumentException("carrierId or serviceId is empty");
+        
+        var shippingService = shippingOption.Split([':'])[0];
+        var shippingCarrierName = shippingService.Split(['-'])[0].Trim();
+        if (shippingCarrierName != shippingCarrier.Name)
+            throw new ArgumentException("shippingCarrierName");
+        
         return await Task.FromResult(new List<string>());
     }
 

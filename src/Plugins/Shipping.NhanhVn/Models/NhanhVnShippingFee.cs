@@ -22,7 +22,7 @@ public class NhanhVnShippingFee
     public string Logo { get; init; }
     
     [JsonPropertyName("carrier")]
-    protected NhanhVnCarrier Carrier { get; init; }
+    public NhanhVnCarrier Carrier { get; init; }
     
     [JsonPropertyName("service")]
     public NhanhVnService Service { get; init; }
@@ -39,7 +39,7 @@ public class NhanhVnShippingFee
     [JsonPropertyName("customerShipFee")]
     public int CustomerShipFee { get; init; }
     
-    protected class NhanhVnCarrier
+    public class NhanhVnCarrier
     {
         [JsonPropertyName("id")]
         public int Id { get; init; }
@@ -54,6 +54,8 @@ public class NhanhVnShippingFee
         public string ShopId { get; init; }
     }
 }
+
+
 
 public class NhanhVnShippingFeeResponse
 {

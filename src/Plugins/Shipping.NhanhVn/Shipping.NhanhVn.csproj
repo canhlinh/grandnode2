@@ -48,4 +48,8 @@
 	  <AdditionalFiles Include="Areas\Admin\Views\_ViewImports.cshtml" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Domain\" />
+	</ItemGroup>
+
 </Project>
