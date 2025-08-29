@@ -56,6 +56,13 @@ public class Shipment : BaseEntity
     ///     Gets the shipment number
     /// </summary>
     public virtual int ShipmentNumber { get; set; }
+    
+    public int NhanhCarrierId { get; set; }
+    public string NhanhCarrierName { get; set; }
+    
+    public int NhanhServiceId { get; set; }
+
+    public string NhanhServiceName { get; set; }
 
     /// <summary>
     ///     Gets or sets the shipment items

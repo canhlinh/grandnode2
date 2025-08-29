@@ -2,6 +2,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using Grand.Business.Core.Interfaces.Catalog.Prices;
 using Grand.Business.Core.Interfaces.Catalog.Products;
+using Grand.Business.Core.Interfaces.Common.Configuration;
 using Grand.Business.Core.Interfaces.Common.Directory;
 using Grand.Business.Core.Utilities.Checkout;
 using Grand.Domain.Catalog;

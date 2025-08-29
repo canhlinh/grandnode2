@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Xml.Serialization;
 using Grand.Business.Core.Enums.Checkout;
 using Grand.Business.Core.Interfaces.Checkout.Orders;
 using Grand.Business.Core.Interfaces.Checkout.Shipping;
@@ -11,6 +13,7 @@ using Grand.Domain.Customers;
 using Grand.Domain.Orders;
 using Grand.Domain.Shipping;
 using Grand.Infrastructure;
+using Shipping.NhanhVn.Domain;
 using Shipping.NhanhVn.Services;
 
 namespace Shipping.NhanhVn;
@@ -115,7 +118,6 @@ public class ShippingNhanhVnProvider : IShippingRateCalculationProvider
 
     public async Task<IList<string>> ValidateShippingForm(string shippingOption, IDictionary<string, string> data)
     {
-                
         if (string.IsNullOrEmpty(shippingOption)) 
             return new List<string> { _translationService.GetResource("Plugins.Shipping.NhanhVn.SelectBeforeProceed") };
         
@@ -131,14 +133,29 @@ public class ShippingNhanhVnProvider : IShippingRateCalculationProvider
         if (shippingCarrier == null)
             throw new ArgumentException("Invalid carrierId");
         
-        var found = shippingCarrier.Services.Any(service => service.Id == int.Parse(serviceId));
-        if (!found)
-            throw new ArgumentException("Invalid serviceId");
-
-        var shippingService = shippingOption.Split([':'])[0];
-        var shippingCarrierName = shippingService.Split(['-'])[0].Trim();
+        var shippingOptionName = shippingOption.Split([':'])[0];
+        var shippingCarrierName = shippingOptionName.Split(['-'])[0].Trim();
         if (shippingCarrierName != shippingCarrier.Name)
             throw new ArgumentException("shippingCarrierName");
+        
+        var shippingService = shippingCarrier.Services.FirstOrDefault(service => service.Id == int.Parse(serviceId));
+        if (shippingService == null)
+            throw new ArgumentException("Invalid serviceId");
+        var shippingServiceName = shippingOptionName.Split(['-'])[1].Trim();
+        if (shippingService.Name != shippingServiceName)
+            throw new ArgumentException("Invalid serviceId");
+        
+        var serializedObject = new ShippingNhanhVnSerializable() {
+            CarrierId = shippingCarrier.Id,
+            CarrierName = shippingCarrier.Name,
+            ServiceId = shippingService.Id,
+            ServiceName = shippingService.Name,
+        };
+        var serializedAttribute = JsonSerializer.Serialize(serializedObject);
+        await _customerService.UpdateUserField(_contextAccessor.WorkContext.CurrentCustomer,
+            SystemCustomerFieldNames.ShippingOptionAttribute,
+            serializedAttribute,
+            _contextAccessor.StoreContext.CurrentStore.Id);
         
         return await Task.FromResult(new List<string>());
     }
